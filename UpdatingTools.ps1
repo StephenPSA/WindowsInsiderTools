@@ -200,12 +200,12 @@ Function Show-Workspace {
 
     Process {
         # Checkin Test
-        Write-Host "CHANGED!!!!!" -ForegroundColor Red
+        Write-Host "CHANGED!!!!!" -ForegroundColor Green
         # Cue User
         Write-Host "Workspace: '$(Get-WitModuleVersion -Workspace)'..."
         Write-Host "Imported : '$(Get-WitModuleVersion -Imported)'..."
         #Write-Host "GitHub   : '$(Get-WitModuleVersion -GitHub)'..."
-        Write-Host "Inhouse   : '$(Get-WitModuleVersion -Canary)'..."
+        Write-Host "Inhouse  : '$(Get-WitModuleVersion -Canary)'..."
     }
 
     End {
