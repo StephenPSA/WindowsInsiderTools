@@ -1,7 +1,7 @@
 ﻿##=================================================================================================
 # File    : UpdatingTools.psm1
 # Author  : StephenPSA
-# Version : 0.0.5.6
+# Version : 0.0.6.2
 # Date    : Oct, 2016, II
 #
 # Publish, Distribute
@@ -205,7 +205,7 @@ Function Show-Workspace {
         Write-Host "Workspace: '$(Get-WitModuleVersion -Workspace)'..."
         Write-Host "Imported : '$(Get-WitModuleVersion -Imported)'..."
         #Write-Host "GitHub   : '$(Get-WitModuleVersion -GitHub)'..."
-        Write-Host "Canary   : '$(Get-WitModuleVersion -Canary)'..."
+        Write-Host "Inhouse   : '$(Get-WitModuleVersion -Canary)'..."
     }
 
     End {
