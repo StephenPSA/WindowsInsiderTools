@@ -1,5 +1,7 @@
-# WindowsInsiderTools - BETA 0.1.0.0
+# WindowsInsiderTools - BETA 0.0.4.x
 Handy PowerShell Module for Windows Insider members
 
-+ COMING Nov, 2016
++ Nov, 2016
 + Use at own risk
+
+Initial Population with: 0.0.4.x
