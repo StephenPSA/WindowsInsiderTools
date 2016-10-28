@@ -1,7 +1,10 @@
-# WindowsInsiderTools - BETA 0.0.4.x
+# WindowsInsiderTools - BETA 0.0.5.0
+# Use at own risk
 Handy PowerShell Module for Windows Insider members
 
 + Nov, 2016
-+ Use at own risk
 
-Initial Population with: 0.0.4.x
++ GitHub support         : 0.0.5.0
++ Initial Population with: 0.0.4.x
+
+See also: https://desktop.github.com/
