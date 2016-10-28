@@ -6,6 +6,8 @@
 #
 # Defines general Funcions
 #
+# THIS IS AN ADDITION
+#
 # See: MSFT_Disk         - https://msdn.microsoft.com/en-us/library/windows/desktop/hh830493(v=vs.85).aspx
 # See: MSFT_PhysicalDisk - https://msdn.microsoft.com/en-us/library/windows/desktop/hh830532(v=vs.85).aspx
 ##-------------------------------------------------------------------------------------------------
