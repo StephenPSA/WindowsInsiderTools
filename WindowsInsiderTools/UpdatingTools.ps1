@@ -24,7 +24,7 @@ Function Get-WitModuleVersion() {
         [Parameter( ParameterSetName='Imported', Mandatory=$false, Position=0 )]
         [Switch]$Imported,
 
-        # Get the Imported Version
+        # Get the Imported Version - Obsolete -> Replace by GitHub (local)
         [Parameter( ParameterSetName='Distribution', Mandatory=$true, Position=0 )]
         [Switch]$Distribution,
 
