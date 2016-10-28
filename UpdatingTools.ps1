@@ -1,7 +1,7 @@
 ﻿##=================================================================================================
 # File    : UpdatingTools.psm1
 # Author  : StephenPSA
-# Version : 0.0.5.3
+# Version : 0.0.5.6
 # Date    : Oct, 2016
 #
 # Publish, Distribute
@@ -199,10 +199,12 @@ Function Show-Workspace {
     }
 
     Process {
+        # Checkin Test
+        Write-Host "CHANGED!!!!!" -ForegroundColor Red
         # Cue User
         Write-Host "Workspace: '$(Get-WitModuleVersion -Workspace)'..."
         Write-Host "Imported : '$(Get-WitModuleVersion -Imported)'..."
-        Write-Host "GitHub   : '$(Get-WitModuleVersion -GitHub)'..."
+        #Write-Host "GitHub   : '$(Get-WitModuleVersion -GitHub)'..."
         Write-Host "Canary   : '$(Get-WitModuleVersion -Canary)'..."
     }
 
