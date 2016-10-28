@@ -1,7 +1,7 @@
 ﻿##=================================================================================================
 # File    : UpdatingTools.psm1
 # Author  : StephenPSA
-# Version : 0.0.3.31
+# Version : 0.0.5.3
 # Date    : Oct, 2016
 #
 # Publish, Distribute
@@ -10,7 +10,8 @@
 #requires -Version 5.0
 
 $WitModulePath = "$HOME\Documents\WindowsPowerShell\Modules\WindowsInsiderTools"
-$WitDistribution = "S:\PSA_Sync\WindowsPowerShell\Modules\WindowsInsiderTools"
+$WitGitHub = "$HOME\Documents\GitHub\WindowsInsiderTools\WindowsInsiderTools"
+$WitCanary = "S:\PSA_Sync\WindowsPowerShell\Modules\WindowsInsiderTools"
 
 <#
 .Synopsis
@@ -20,17 +21,21 @@ Function Get-WitModuleVersion() {
     [CmdletBinding( DefaultParameterSetName='Imported' )]
     [Alias( 'gwv' )]
     Param(
+        # Get the Workspace Version
+        [Parameter( ParameterSetName='Workspace', Mandatory=$true, Position=0 )]
+        [Switch]$Workspace,
+
         # Get the Imported Version
         [Parameter( ParameterSetName='Imported', Mandatory=$false, Position=0 )]
         [Switch]$Imported,
 
-        # Get the Imported Version - Obsolete -> Replace by GitHub (local)
-        [Parameter( ParameterSetName='Distribution', Mandatory=$true, Position=0 )]
-        [Switch]$Distribution,
+        # Get the GitHub (local) Version
+        [Parameter( ParameterSetName='GitHub', Mandatory=$true, Position=0 )]
+        [Switch]$GitHub,
 
-        # Get the Distribution Version
-        [Parameter( ParameterSetName='Workspace', Mandatory=$true, Position=0 )]
-        [Switch]$Workspace,
+        # Get the Canary Version
+        [Parameter( ParameterSetName='Canary', Mandatory=$true, Position=0 )]
+        [Switch]$Canary,
 
         # Get the Version at
         [Parameter( ParameterSetName='Path', Mandatory=$false )]
@@ -46,9 +51,10 @@ Function Get-WitModuleVersion() {
             # Module by ParameterSet
             switch ( $PSCmdlet.ParameterSetName ) {
                 'Imported'     { $m = Get-Module -Name 'WindowsInsiderTools' }
-                'Workspace'    { $m = Test-ModuleManifest   "$WitModulePath\WindowsInsiderTools.psd1" }
-                'Distribution' { $m = Test-ModuleManifest "$WitDistribution\WindowsInsiderTools.psd1" }
-                'Path'         { $m = Test-ModuleManifest            "$Path\WindowsInsiderTools.psd1" }
+                'Workspace'    { $m = Test-ModuleManifest "$WitModulePath\WindowsInsiderTools.psd1" }
+                'GitHub'       { $m = Test-ModuleManifest     "$WitGitHub\WindowsInsiderTools.psd1" }
+                'Canary'       { $m = Test-ModuleManifest     "$WitCanary\WindowsInsiderTools.psd1" }
+                'Path'         { $m = Test-ModuleManifest          "$Path\WindowsInsiderTools.psd1" }
             }
                             
             # $m = Test-ModuleManifest $pth -ErrorAction SilentlyContinue
@@ -79,7 +85,7 @@ Function Update-WindowsInsiderTools {
         $dist = "S:\PSA_Sync\WindowsPowerShell\Modules\WindowsInsiderTools"
         $modp = "$HOME\Documents\WindowsPowerShell\Modules\WindowsInsiderTools"
         # Check needed
-        $vd = Get-WitModuleVersion -Distribution
+        $vd = Get-WitModuleVersion -Canary
         $vi = Get-WitModuleVersion -Imported
         $Force = $Force -or ($vd -gt $vi)
     }
@@ -118,7 +124,7 @@ Function Publish-WindowsInsiderTools {
     Param()
 
     Begin {
-        # Distribution locations - WindowsInsiderTools
+        # Canary locations - WindowsInsiderTools
         $modp = "$HOME\Documents\WindowsPowerShell\Modules\WindowsInsiderTools"
         $hist = "S:\PSA_Sync\WindowsPowerShell"
         $dist = "S:\PSA_Sync\WindowsPowerShell\Modules\WindowsInsiderTools"
@@ -196,7 +202,8 @@ Function Show-Workspace {
         # Cue User
         Write-Host "Workspace: '$(Get-WitModuleVersion -Workspace)'..."
         Write-Host "Imported : '$(Get-WitModuleVersion -Imported)'..."
-        Write-Host "Public   : '$(Get-WitModuleVersion -Distribution)'..."
+        Write-Host "GitHub   : '$(Get-WitModuleVersion -GitHub)'..."
+        Write-Host "Canary   : '$(Get-WitModuleVersion -Canary)'..."
     }
 
     End {
