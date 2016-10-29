@@ -27,7 +27,7 @@ Function Show-GitQuickStart() {
         $h = git --help
         $hasGit = $true
         # Cue User
-        Write-Host "Git is installed" -ForegroundColor DarkGreen
+        Write-Host "Git is installed" -ForegroundColor Green
     }
     catch {
         # Cue User
@@ -44,7 +44,7 @@ Function Show-GitQuickStart() {
     }
     else {
         # Cue User
-        Write-Host "Posh Git is installed: Version: $($pg.Version)" -ForegroundColor DarkGreen
+        Write-Host "Posh Git is installed: Version: $($pg.Version)" -ForegroundColor Green
     }
 
     # Show Cheat Sheet
