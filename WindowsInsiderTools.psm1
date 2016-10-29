@@ -1,7 +1,7 @@
 ﻿##=================================================================================================
 # File    : WindowsInsiderTools.psm1
 # Author  : StephenPSA
-# Version : 0.0.4.4
+# Version : 0.0.6.7
 # Date    : Oct, 2016
 ##-------------------------------------------------------------------------------------------------
 #requires -Version 5.0
@@ -270,7 +270,8 @@ Class OsStateClass {
         # OS
         $this.Edition = $cimi.Caption
         $this.Architecture = $cimi.OSArchitecture
-        $this.Build = Get-ItemPropertyValue 'HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Flighting\Build' -Name 'OSVersion' 
+        #$this.Build = Get-ItemPropertyValue 'HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Flighting\Build' -Name 'OSVersion' 
+        $this.Build = $Global:PSVersionTable.BuildVersion
         $this.InstallDate = $cimi.InstallDate
         $this.Activation = 'Todo: Anyone know the key(s) for this?'
         $this.WindowsDirectory = $cimi.WindowsDirectory
