@@ -1,4 +1,4 @@
-# WindowsInsiderTools - BETA 0.0.6.5 GOTCHA
+# WindowsInsiderTools - BETA 0.0.6.5
 # Under construction, use at own risk
 Handy PowerShell Module for Windows Insider members
 
