@@ -429,10 +429,4 @@ Class OsStateClass {
 #$ps = { Machine, Description, InstallDate, Build }
 #Update-TypeData -TypeName OsStateClass -DefaultDisplayPropertySet MachineName, Description, InstallDate, Build -Force
 
-# git clone <Gitub url>
-
-# git branch <branche name>
-
-
-
 # EOS
