@@ -10,7 +10,7 @@
 #requires -Version 5.0
 
 $WitModulePath = "$HOME\Documents\WindowsPowerShell\Modules\WindowsInsiderTools"
-$WitGitHub = "$HOME\Documents\GitHub\WindowsInsiderTools\WindowsInsiderTools"
+$WitGitHub = "$HOME\Documents\GitHub\WindowsInsiderTools"
 $WitCanary = "S:\PSA_Sync\WindowsPowerShell\Modules\WindowsInsiderTools"
 
 <#
@@ -199,13 +199,16 @@ Function Show-Workspace {
     }
 
     Process {
-        # Checkin Test
-        Write-Host "CHANGED!!!!!" -ForegroundColor Green
         # Cue User
-        Write-Host "Workspace: '$(Get-WitModuleVersion -Workspace)'..."
-        Write-Host "Imported : '$(Get-WitModuleVersion -Imported)'..."
-        #Write-Host "GitHub   : '$(Get-WitModuleVersion -GitHub)'..."
-        Write-Host "Inhouse  : '$(Get-WitModuleVersion -Canary)'..."
+        # Tobe user defined by Path parameter 
+        Write-Host
+        Write-Host "Workspace version: Todo Version state colors"
+        Write-Host "--------------------------------------------"
+        Write-Host "Imported  version: $(Get-WitModuleVersion -Imported)"
+        Write-Host "WitModule version: $(Get-WitModuleVersion -Workspace)"
+        Write-Host "GitHub    version: $(Get-WitModuleVersion -GitHub)"
+        Write-Host "Canary    version: $(Get-WitModuleVersion -Canary)"
+        Write-Host
     }
 
     End {
