@@ -425,14 +425,16 @@ Class OsStateClass {
 
 ##-------------------------------------------------------------------------------------------------
 # Import Tooling
-. $HOME\Documents\WindowsPowerShell\Modules\WindowsInsiderTools\RegistryTools.ps1
-. $HOME\Documents\WindowsPowerShell\Modules\WindowsInsiderTools\GeneralTools.ps1
-. $HOME\Documents\WindowsPowerShell\Modules\WindowsInsiderTools\EventLogTools.ps1
-. $HOME\Documents\WindowsPowerShell\Modules\WindowsInsiderTools\HardwareTools.ps1
-. $HOME\Documents\WindowsPowerShell\Modules\WindowsInsiderTools\MonitoringTools.ps1
-. $HOME\Documents\WindowsPowerShell\Modules\WindowsInsiderTools\RemotingTools.ps1
-. $HOME\Documents\WindowsPowerShell\Modules\WindowsInsiderTools\GitTools.ps1
-. $HOME\Documents\WindowsPowerShell\Modules\WindowsInsiderTools\UpdatingTools.ps1
+. $HOME\Documents\WindowsPowerShell\Modules\WindowsInsiderTools\Tools\ContributerTools.ps1
+. $HOME\Documents\WindowsPowerShell\Modules\WindowsInsiderTools\Tools\EventLogTools.ps1
+. $HOME\Documents\WindowsPowerShell\Modules\WindowsInsiderTools\Tools\GeneralTools.ps1
+. $HOME\Documents\WindowsPowerShell\Modules\WindowsInsiderTools\Tools\GitTools.ps1
+. $HOME\Documents\WindowsPowerShell\Modules\WindowsInsiderTools\Tools\HardwareTools.ps1
+. $HOME\Documents\WindowsPowerShell\Modules\WindowsInsiderTools\Tools\IoTTools.ps1
+. $HOME\Documents\WindowsPowerShell\Modules\WindowsInsiderTools\Tools\MonitoringTools.ps1
+. $HOME\Documents\WindowsPowerShell\Modules\WindowsInsiderTools\Tools\RegistryTools.ps1
+. $HOME\Documents\WindowsPowerShell\Modules\WindowsInsiderTools\Tools\RemotingTools.ps1
+. $HOME\Documents\WindowsPowerShell\Modules\WindowsInsiderTools\Tools\UpdatingTools.ps1
 
 #$ps = { Machine, Description, InstallDate, Build }
 #Update-TypeData -TypeName OsStateClass -DefaultDisplayPropertySet MachineName, Description, InstallDate, Build -Force
