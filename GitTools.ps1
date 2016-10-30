@@ -1,7 +1,7 @@
 ﻿##=================================================================================================
 # File    : GitTools.ps1
 # Author  : StephenPSA
-# Version : 0.0.6.12
+# Version : 0.0.6.14
 # Date    : Oct, 2016
 #
 # Defines Funcions connected to Git use
