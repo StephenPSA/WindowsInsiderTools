@@ -1,7 +1,7 @@
 ﻿##=================================================================================================
 # File    : UpdatingTools.psm1
 # Author  : StephenPSA
-# Version : 0.0.6.2
+# Version : 0.0.6.15
 # Date    : Oct, 2016, II
 #
 # Publish, Distribute
@@ -76,6 +76,9 @@ Function Update-WindowsInsiderTools {
     [CmdletBinding()]
     [Alias( 'uwit' )]
     Param(
+        # The NickName(s) of the machines to update
+        [string[]]$NickName,
+
         # Overwrite current Module unconditinally
         [Switch]$Force
     )
@@ -94,22 +97,22 @@ Function Update-WindowsInsiderTools {
     }
 
     End {
-        # if needed, Go
-        if( !$Force ) {
-            # Cue User
-            Write-Verbose "No Update needed"
-        }
-        else {
-            # Cue User
-            Write-Verbose "Updating WIT to: $vd (public) from: $vi (imported)..."
-            Write-Verbose "Collecting files..."
-            $fs = Get-ChildItem -Path $dist -Recurse
-            # Cue User
-            Write-Verbose "Copying files..."
-            $fs | Copy-Item -Destination $modp
-            # Reset
-            Reset-WindowsInsiderTools
-        }
+        ## if needed, Go
+        #if( !$Force ) {
+        #    # Cue User
+        #    Write-Verbose "No Update needed"
+        #}
+        #else {
+        #    # Cue User
+        #    Write-Verbose "Updating WIT to: $vd (public) from: $vi (imported)..."
+        #    Write-Verbose "Collecting files..."
+        #    $fs = Get-ChildItem -Path $WitCanary -Recurse
+        #    # Cue User
+        #    Write-Verbose "Copying files..."
+        #    $fs | Copy-Item -Destination $modp
+        #    # Reset
+        #    Reset-WindowsInsiderTools
+        #}
     } 
 
 }
@@ -117,6 +120,8 @@ Function Update-WindowsInsiderTools {
 <#
 .Synopsis
     Unconditionally Distributes Version updates    
+.Notes
+    Needs rework to allow for 
 #>
 Function Publish-WindowsInsiderTools {
     [CmdletBinding()]
