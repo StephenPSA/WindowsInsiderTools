@@ -89,6 +89,14 @@ enum DiskOperationalStatus {
     Failed = 0xD014
 }
 
+# Enum
+enum WitWorkspace {
+    Imported
+    WitModule
+    GitHub
+    Canary
+}
+
 # Define a Data Class
 Class DiskInfoClass {
 
