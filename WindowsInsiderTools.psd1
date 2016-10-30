@@ -69,10 +69,10 @@ Description = 'Handy functions for Windows Insider members'
 # ScriptsToProcess = @()
 
 # Type files (.ps1xml) to be loaded when importing this module
-#TypesToProcess = @( WitTypes.Types.ps1xml )
+#TypesToProcess = @()
 
 # Format files (.ps1xml) to be loaded when importing this module
-#FormatsToProcess = @( WindowsInsiderTools.Format.ps1xml )
+FormatsToProcess = @( 'WindowsInsiderToolsTypes.Format.ps1xml' )
 
 # Modules to import as nested modules of the module specified in RootModule/ModuleToProcess
 # NestedModules = @()
