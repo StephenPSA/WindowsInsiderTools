@@ -172,6 +172,56 @@ Function Test-IsAdmin() {
     return (Test-IsLocalAdmin -or Test-IsDomainAdmin)
 }
 
+<#
+.Synopsis
+   Test whether Git is installed on this machine
+#>
+function Test-HasGitCommands {
+    [CmdletBinding()]
+    [OutputType([bool])]
+    Param(
+        # The NickName(s) of the Machines to test
+        [Parameter( Mandatory=$false, Position=0 )]
+        [string[]]$NickName
+    )
+
+    Begin {
+        # vars
+        $res = $true
+
+        # Local
+        Write-Verbose "Testing whether 'git' is a command..."
+        $c = Get-Command -Name git -ErrorAction SilentlyContinue
+        $res = $res -and ($c -ne $null)
+        if( $res ) {
+            Write-Verbose "Testing whether 'git' is a command..."
+        }
+        else {
+            Write-Verbose "Testing whether 'git' is a running..."
+            try {
+                $h = git --help
+            }
+            catch {
+                Write-Verbose "'git --help' failed"
+            }
+        }
+    }
+
+    Process {
+        # If not ok, Done
+        if( !$res ) { return }
+
+        # Match NickNames
+
+        # EOP
+    }
+
+    End {
+        # Write Pipeline
+        Write-Output $res
+    }
+}
+
 <# 
 .Synopsis
     Gets the DateTime this Machine's OS was installed
