@@ -9,4 +9,24 @@
 ##-------------------------------------------------------------------------------------------------
 #requires -Version 5.0
 
+<#
+.Synopsis
+   Opens a location of Interest
+#>
+function Open-Explorer {
+    [CmdletBinding()]
+    Param()
+
+    Begin {
+    }
+
+    Process {
+    }
+
+    End {
+        $path = 'https://github.com/StephenPSA/WindowsInsiderTools'
+        explorer $path
+    }
+}
+
 # EOS
