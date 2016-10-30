@@ -1,4 +1,4 @@
-# WindowsInsiderTools - BETA 0.0.6.18
+# WindowsInsiderTools - BETA 0.0.6.19
 
 # Under construction, use at own risk
 
