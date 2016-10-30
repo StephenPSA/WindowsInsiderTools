@@ -1,7 +1,7 @@
 ﻿##=================================================================================================
 # File    : WindowsInsiderTools.psd1
 # Author  : StephenPSA
-# Version : 0.0.6.17
+# Version : 0.0.6.18
 # Date    : Oct, 2016
 #
 # Module manifest for module 'WindowsInsiderTools'
@@ -21,7 +21,7 @@
 RootModule = 'WindowsInsiderTools.psm1'
 
 # Version number of this module.
-ModuleVersion = '0.0.6.17'
+ModuleVersion = '0.0.6.18'
 
 # Supported PSEditions
 # CompatiblePSEditions = @()
