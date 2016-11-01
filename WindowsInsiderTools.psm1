@@ -275,13 +275,15 @@ Class OsStateClass {
         $this.PhysicalMemory = $cimi.TotalVisibleMemorySize
         $this.PhysicalMemoryFree = $cimi.FreePhysicalMemory
         # CPU - Todo
+        # Insider
+
         # OS
         $this.Edition = $cimi.Caption
         $this.Architecture = $cimi.OSArchitecture
         #$this.Build = Get-ItemPropertyValue 'HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Flighting\Build' -Name 'OSVersion' 
         $this.Build = $Global:PSVersionTable.BuildVersion
         $this.InstallDate = $cimi.InstallDate
-        $this.Activation = 'Todo: Anyone know the key(s) for this?'
+        $this.Activation = 'Todo'
         $this.WindowsDirectory = $cimi.WindowsDirectory
         # Volume
         $this.VolumeLetter = $cimi.WindowsDirectory[0]
@@ -323,14 +325,17 @@ Class OsStateClass {
       [string]$Description
       [UInt64]$PhysicalMemory
       [UInt64]$PhysicalMemoryFree
-              # Windows
+              # CPU - Todo
+              # Insider
+      [string]$InsiderRing      = 'n.a.'
+              # OS
       [string]$Edition
       [string]$Architecture
       [string]$Build
     [DateTime]$InstallDate
+              # Todo Activation state
       [string]$Activation       = 'n.a.'
       [string]$WindowsDirectory
-              # Todo Act
       [string]$WitVersion
               # Defender
     [DateTime]$DefenderDefinitionDate
@@ -371,6 +376,20 @@ Class OsStateClass {
         Write-Verbose "Refresh invoked..."
         # WindowsInsiderTools Version
         $this.WitVersion = (Get-Module 'WindowsInsiderTools').Version.ToString()
+
+        # Insider Ringd
+        $key = 'SOFTWARE\Microsoft\Windows\CurrentVersion\Diagnostics\DiagTrack\SettingsRequests'
+        # this getthe Settings syn time? $x = Get-RegistryValue $key 'LastDownloadTime' -MinDateTime
+        #$x = Get-RegistryValue $key 'LastTelSettingsRingId' -NotAvailable
+        $x = Get-RegistryValue $key 'LastTelSettingsRingName' -NotAvailable
+        $this.InsiderRing = switch( $x ) {
+            'WIF' { 'Fast' }
+            'WIS' { 'Slow' }
+            'WIP' { 'Prvw' }
+            Default { $x }
+        }
+        # SOFTWARE\Microsoft\WindowsSelfHost\Applicability
+        # - Ring, Enabled
         # Specialists
         $this.RefreshDefender()
     }

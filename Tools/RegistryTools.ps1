@@ -90,9 +90,8 @@ Function Get-RegistryValue {
             # Determine REG_xx type
             $REG_Type = switch( $regdata.GetType().Name ) {
                 'byte[]' { "REG_BINARY" }
-                'Int32' { 
-                    "REG_DWORD" 
-                }
+                'Int32' { "REG_DWORD" }
+                'Int64' { "REG_QWORD" }
                 'string' { "REG_SZ" }
                 default {
                     Write-Error "Unsupported REG_Type: '$REG_Type'"
@@ -131,6 +130,20 @@ Function Get-RegistryValue {
                         }
                         'string' { $res = ([Int32]$regdata).ToString() }
                         'Int32' { $res = [Int32]$regdata }
+                    }
+                 }
+                'REG_QWORD' { 
+                    switch( $Fallback.GetType().Name ) {
+                        default {
+                            Write-Error "Unsupported conversion REG_Type: '$REG_Type' to '$($Fallback.GetType().Name)'"
+                            return
+                        }
+
+                        # NEEDS VERIFICATION!
+                        'DateTime' { $res = [DateTime]::FromFileTime( ([Int64]$regdata).ToString() ) }
+
+                        'string' { $res = ([Int64]$regdata).ToString( "N" ) }
+                        'Int64' { $res = [Int64]$regdata }
                     }
                  }
                 'REG_SZ' { 

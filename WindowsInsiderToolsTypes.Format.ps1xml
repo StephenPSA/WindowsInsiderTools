@@ -9,18 +9,61 @@
             <TableControl>
                 <TableHeaders>
                     <TableColumnHeader>
-                        <Label>Machine</Label>
-                        <Width>10</Width>
-                        <Alignment>right</Alignment>
+                        <Label>NN</Label>
                     </TableColumnHeader>
                     <TableColumnHeader>
-                        <Width>50</Width>
+                        <Label>Machine</Label>
+                        <Width>12</Width>
                     </TableColumnHeader>
-                    <TableColumnHeader />
+                    <TableColumnHeader>
+                        <Label>Description</Label>
+                        <Width>40</Width>
+                    </TableColumnHeader>
+                    <TableColumnHeader>
+                        <Label>Mem-Free</Label>
+                        <Alignment>Right</Alignment>
+                    </TableColumnHeader>
+                    <TableColumnHeader>
+                        <Label>Disk</Label>
+                    </TableColumnHeader>
+                    <TableColumnHeader>
+                        <Label>Status</Label>
+                    </TableColumnHeader>
+                    <TableColumnHeader>
+                        <Label>Vol-Free</Label>
+                        <Alignment>Right</Alignment>
+                    </TableColumnHeader>
+                    <TableColumnHeader>
+                        <Label>Ring</Label>
+                    </TableColumnHeader>
+                    <TableColumnHeader>
+                        <Label>OS-Build</Label>
+                    </TableColumnHeader>
+                    <TableColumnHeader>
+                        <Label>OS-Edition</Label>
+                    </TableColumnHeader>
+                    <TableColumnHeader>
+                        <Label>Arch.</Label>
+                    </TableColumnHeader>
+                    <TableColumnHeader>
+                        <Label>Act</Label>
+                    </TableColumnHeader>
+                    <TableColumnHeader>
+                        <Label>AV-Definition</Label>
+                    </TableColumnHeader>
+                    <TableColumnHeader>
+                        <Label>Scanned</Label>
+                    </TableColumnHeader>
+                    <TableColumnHeader>
+                        <Label>Scan</Label>
+                    </TableColumnHeader>
                 </TableHeaders>
                 <TableRowEntries>
                     <TableRowEntry>
                         <TableColumnItems>
+                            <TableColumnItem>
+                                <PropertyName>NickName</PropertyName>
+                            </TableColumnItem>
                             <TableColumnItem>
                                 <PropertyName>MachineName</PropertyName>
                             </TableColumnItem>
@@ -28,7 +71,40 @@
                                 <PropertyName>Description</PropertyName>
                             </TableColumnItem>
                             <TableColumnItem>
+                                <ScriptBlock>($_.PhysicalMemoryFree / 1mb).ToString( "0.0 GB" )</ScriptBlock>
+                            </TableColumnItem>
+                            <TableColumnItem>
+                                <PropertyName>DiskType</PropertyName>
+                            </TableColumnItem>
+                            <TableColumnItem>
+                                <PropertyName>DiskHealth</PropertyName>
+                            </TableColumnItem>
+                            <TableColumnItem>
+                                <ScriptBlock>($_.VolumeFree / 1gb).ToString( "0.0 GB" )</ScriptBlock>
+                            </TableColumnItem>
+                            <TableColumnItem>
+                                <PropertyName>InsiderRing</PropertyName>
+                            </TableColumnItem>
+                            <TableColumnItem>
                                 <PropertyName>Build</PropertyName>
+                            </TableColumnItem>
+                            <TableColumnItem>
+                                <ScriptBlock>($_.Edition).Replace( "Microsoft Windows ", "Win " ).Replace( " Insider Preview", "" )</ScriptBlock>
+                            </TableColumnItem>
+                            <TableColumnItem>
+                                <PropertyName>Architecture</PropertyName>
+                            </TableColumnItem>
+                            <TableColumnItem>
+                                <ScriptBlock>$_.Activation</ScriptBlock>
+                            </TableColumnItem>
+                            <TableColumnItem>
+                                <PropertyName>DefenderAvDefinition</PropertyName>
+                            </TableColumnItem>
+                            <TableColumnItem>
+                                <ScriptBlock>$_.DefenderLastScanDate.ToString( "MMM d" )</ScriptBlock>
+                            </TableColumnItem>
+                            <TableColumnItem>
+                                <PropertyName>DefenderLastScanType</PropertyName>
                             </TableColumnItem>
                         </TableColumnItems>
                     </TableRowEntry>
