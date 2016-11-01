@@ -72,6 +72,13 @@ Function Get-WitModuleVersion() {
 .Synopsis
     Unconditionally Imports Version updates    
 #>
+Function Update-LocalWindowsInsiderTools {
+}
+
+<#
+.Synopsis
+    Unconditionally Imports Version updates    
+#>
 Function Update-WindowsInsiderTools {
     [CmdletBinding()]
     [Alias( 'uwit' )]
@@ -79,25 +86,65 @@ Function Update-WindowsInsiderTools {
         # The NickName(s) of the machines to update
         [string[]]$NickName,
 
+        # Whether to reset the WitSession(s) updated
+        [Switch]$ResetSession,
+
         # Overwrite current Module unconditinally
         [Switch]$Force
     )
 
     Begin {
-        # Install WindowsInsiderTools
-        $dist = "S:\PSA_Sync\WindowsPowerShell\Modules\WindowsInsiderTools"
-        $modp = "$HOME\Documents\WindowsPowerShell\Modules\WindowsInsiderTools"
-        # Check needed
-        $vd = Get-WitModuleVersion -Canary
-        $vi = Get-WitModuleVersion -Imported
-        $Force = $Force -or ($vd -gt $vi)
     }
 
     Process {
+
+        # Walk NickName
+        foreach( $nn in $NickName ) {
+            # Cue Verbose
+            Write-Host "Updating: '$nn'..."
+            # Local OsState
+            if( $nn -in '.', '*' ) {
+                # Inline
+                Write-Host "Updating: '$env:COMPUTERNAME'..."
+            }
+            
+            # Init (Background) Work WitSessions
+            if( $Depth -gt 0 ) {
+                $ss = Get-WitSession -NickName $nn -WarningAction SilentlyContinue
+                if( $ss -ne $null ) {
+                    # Inline
+                    # Background
+                    foreach( $s in $ss ) {
+                        # vars
+                        $rdp = $Depth - 1
+                        $rnn = $s.Name.Substring(11)
+                        Write-Host "Updating: '$rnn'..."
+                        #$jobs += Invoke-Command -Session $s { gev -NickName '*' -Depth $Using:rdp `
+                        #                                          -LastMinutes:$Using:LastMinutes `
+                        #                                          -ShowInformation:$Using:ShowInformation `
+                        #                                          -LocalNickName:$Using:rnn `
+                        #         } -AsJob -JobName "WitJob_$rnn )"
+                    }
+                }
+            }
+
+        }
+
+        <## Local Install WindowsInsiderTools
+        #$dist = "S:\PSA_Sync\WindowsPowerShell\Modules\WindowsInsiderTools"
+        #
+        #$modp = "$HOME\Documents\WindowsPowerShell\Modules\WindowsInsiderTools"
+        ## Check needed
+        #$vd = Get-WitModuleVersion -Canary
+        #$vi = Get-WitModuleVersion -Imported
+        #$Force = $Force -or ($vd -gt $vi)
+        #>
     }
 
     End {
-        ## if needed, Go
+        #
+
+        <## if needed, Go
         #if( !$Force ) {
         #    # Cue User
         #    Write-Verbose "No Update needed"
@@ -112,7 +159,7 @@ Function Update-WindowsInsiderTools {
         #    $fs | Copy-Item -Destination $modp
         #    # Reset
         #    Reset-WindowsInsiderTools
-        #}
+        #}#>
     } 
 
 }
