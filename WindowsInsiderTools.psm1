@@ -91,10 +91,23 @@ enum DiskOperationalStatus {
 
 # Enum
 enum WitWorkspace {
-    Imported
-    WitModule
-    GitHub
+    # Generic
+    NotSet
+    # Usefull Locations
+    MyDocuments
+    MyProjects
+    # Usefull Locations
     Canary
+    Imported
+    # WIT
+    WitModule
+    WitImported
+    WitUpdate
+    # Usefull Web-Sites
+    GitHub
+    Git
+    PoshGit
+    GitDesktop
 }
 
 # Define a Data Class
