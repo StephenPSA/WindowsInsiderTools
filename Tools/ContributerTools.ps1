@@ -17,13 +17,13 @@ function Open-Workspace {
     [CmdletBinding()]
     [Alias( 'ows' )]
     Param(
-        # The Path to Goto or Open in Explorer
-        [Parameter( ParameterSetName='Path', Mandatory=$false, Position=0 )]
-        [string]$Path = '.',
-
         # The Workspace to Goto or Open in Explorer
         [Parameter( ParameterSetName='Workspace', Mandatory=$false, Position=0 )]
-        [WitWorkspace[]]$Workspace = [WitWorkspace]::NotSet
+        [WitWorkspace[]]$Workspace = [WitWorkspace]::NotSet,
+
+        # The Path to Goto or Open in Explorer
+        [Parameter( ParameterSetName='Path', Mandatory=$true, Position=0 )]
+        [string]$Path = '.'
     )
 
     Begin {
@@ -43,7 +43,7 @@ function Open-Workspace {
                 explorer $Path
             }
             else {
-                Set-Location $Path
+                Push-Location; Set-Location $Path
             }
         }
         # -- WitWorkspace
@@ -53,13 +53,13 @@ function Open-Workspace {
                 switch( $ws ) {
                     '' {}
                     # Usefull Locations
-                    'MyDocuments'         { Set-Location "$HOME\Documents" }
-                    'MyProjects'          { Set-Location "$HOME\Documents\Visual Studio 15\Projects" }
+                    'MyDocuments'         { Push-Location; Set-Location "$HOME\Documents" }
+                    'MyProjects'          { Push-Location; Set-Location "$HOME\Documents\Visual Studio 15\Projects" }
                     # Usefull Locations     
                     'Canary'              { }
                     'Imported'            { }
                     # WIT                   
-                    'WitModule'           { Set-Location "$HOME\Documents\WindowsPowerShell\Modules\WindowsInsiderTools" }
+                    'WitModule'           { Push-Location; Set-Location "$HOME\Documents\WindowsPowerShell\Modules\WindowsInsiderTools" }
                     'WitImported'         { }
                     'WitUpdate'           { explorer "https://github.com/StephenPSA/WindowsInsiderTools" }
                     # Usefull Web-Sites     
