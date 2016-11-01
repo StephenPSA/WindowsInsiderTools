@@ -14,12 +14,12 @@
    Opens a location for work
 #>
 function Open-Workspace {
-    [CmdletBinding()]
+    [CmdletBinding( DefaultParameterSetName='Path' )]
     [Alias( 'ows' )]
     Param(
         # The Workspace to Goto or Open in Explorer
-        [Parameter( ParameterSetName='Workspace', Mandatory=$false, Position=0 )]
-        [WitWorkspace[]]$Workspace = [WitWorkspace]::NotSet,
+        [Parameter( ParameterSetName='Workspace', Mandatory=$true, Position=0 )]
+        [WitWorkspace[]]$Workspace,
 
         # The Path to Goto or Open in Explorer
         [Parameter( ParameterSetName='Path', Mandatory=$true, Position=0 )]
