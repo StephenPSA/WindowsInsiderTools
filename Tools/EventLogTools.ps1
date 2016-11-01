@@ -293,19 +293,6 @@ Function Get-EventInfo() {
     [Alias( 'gev' )]
     [OutputType([object[]])]
     Param(
-        # The NickName(s) to show, accepts Wildcards
-        [Parameter( Mandatory=$false, Position=0 )]
-        [string[]]$NickName = '*',
-        
-        # To which Depth to include Remoting WitSession(s)
-        # Warning: works as -Recurse when -gt 0
-        [Parameter( Mandatory=$false, Position=1 )]
-        [uint16]$Depth = 1,
-
-        # The NickName(s) to show for remotes
-        [Parameter( Mandatory=$false, Position=2 )]
-        [string]$LocalNickName = '.',
-        
         # Show Events generated in the last N minutes (default: 60 minutes)
         [Parameter( ParameterSetName='LastMinutes', Mandatory=$false, Position=3 )]
         [int]$LastMinutes = 60,
@@ -368,8 +355,21 @@ Function Get-EventInfo() {
 
         # Sort EntryTime Ascending
         [Parameter( Mandatory=$false )]
-        [Switch]$Ascending
+        [Switch]$Ascending,
 
+        # The NickName(s) to show, accepts Wildcards
+        [Parameter( Mandatory=$false )]
+        [string[]]$NickName = '*',
+        
+        # To which Depth to include Remoting WitSession(s)
+        # Warning: works as -Recurse when -gt 0
+        [Parameter( Mandatory=$false )]
+        [uint16]$Depth = 1,
+
+        # The NickName(s) to show for remotes
+        [Parameter( Mandatory=$false )]
+        [string]$LocalNickName = '.'
+        
     )
      
     Begin {
