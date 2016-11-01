@@ -11,21 +11,28 @@
 
 <#
 .Synopsis
-   Opens a location of Interest
+   Opens a location for work
 #>
-function Open-Explorer {
+function Open-Workspace {
     [CmdletBinding()]
-    Param()
+    Param(
+        # The Path to Goto or Open in Explorer
+        [string]$Path = 'https://github.com/StephenPSA/WindowsInsiderTools'
+    )
 
     Begin {
+        ## Go
+        #switch( $PSCmdlet.ParameterSetName ) {
+        #    '
+        #    default { Set-Location $Path }
+        #}
     }
 
     Process {
     }
 
     End {
-        $path = 'https://github.com/StephenPSA/WindowsInsiderTools'
-        explorer $path
+        explorer $Path
     }
 }
 
