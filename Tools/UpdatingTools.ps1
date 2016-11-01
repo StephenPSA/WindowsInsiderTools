@@ -84,7 +84,7 @@ Function Update-WindowsInsiderTools {
     [Alias( 'uwit' )]
     Param(
         # The NickName(s) of the machines to update
-        [string[]]$NickName,
+        [string[]]$NickName = '.',
 
         # Whether to reset the WitSession(s) updated
         [Switch]$ResetSession,
@@ -101,11 +101,16 @@ Function Update-WindowsInsiderTools {
         # Walk NickName
         foreach( $nn in $NickName ) {
             # Cue Verbose
-            Write-Host "Updating: '$nn'..."
+            #Write-Host "Updating: '$nn'..."
             # Local OsState
             if( $nn -in '.', '*' ) {
                 # Inline
                 Write-Host "Updating: '$env:COMPUTERNAME'..."
+                Push-Location
+                #Open-Workspace -Space Workspace
+                $g = git status
+                $g
+                Pop-Location
             }
             
             # Init (Background) Work WitSessions
@@ -256,10 +261,10 @@ Function Show-Workspace {
         Write-Host
         Write-Host "Workspace version: Todo Version state colors"
         Write-Host "--------------------------------------------"
-        Write-Host "Imported  version: $(Get-WitModuleVersion -Imported)"
-        Write-Host "WitModule version: $(Get-WitModuleVersion -Workspace)"
-        Write-Host "GitHub    version: $(Get-WitModuleVersion -GitHub)"
-        Write-Host "Canary    version: $(Get-WitModuleVersion -Canary)"
+        Write-Host "Workspace Version: $(Get-WitModuleVersion -Workspace)"
+        Write-Host "Imported  Version: $(Get-WitModuleVersion -Imported)"
+        #Write-Host "Canary    Version: $(Get-WitModuleVersion -Canary)"
+        Write-Host "GitHub    Version: Todo"
         Write-Host
     }
 
