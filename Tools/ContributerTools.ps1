@@ -43,7 +43,7 @@ function Open-Workspace {
                 explorer $Path
             }
             else {
-                Push-Location; Set-Location $Path
+                Set-Location $Path
             }
         }
         # -- WitWorkspace
@@ -53,13 +53,13 @@ function Open-Workspace {
                 switch( $ws ) {
                     '' {}
                     # Usefull Locations
-                    'MyDocuments'         { Push-Location; Set-Location "$HOME\Documents" }
-                    'MyProjects'          { Push-Location; Set-Location "$HOME\Documents\Visual Studio 15\Projects" }
+                    'MyDocuments'         { Set-Location "$HOME\Documents" }
+                    'MyProjects'          { Set-Location "$HOME\Documents\Visual Studio 15\Projects" }
                     # Usefull Locations     
                     'Canary'              { }
                     'Imported'            { }
                     # WIT                   
-                    'WitModule'           { Push-Location; Set-Location "$HOME\Documents\WindowsPowerShell\Modules\WindowsInsiderTools" }
+                    'WitModule'           { Set-Location "$HOME\Documents\WindowsPowerShell\Modules\WindowsInsiderTools" }
                     'WitImported'         { }
                     'WitUpdate'           { explorer "https://github.com/StephenPSA/WindowsInsiderTools" }
                     # Usefull Web-Sites     
