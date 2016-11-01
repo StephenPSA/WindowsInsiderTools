@@ -20,16 +20,15 @@
 #>
 Function Show-GitQuickStart() {
     # var
-    $hasGit = $false
+    $hasGit = Test-HasGitCommands
 
     # GIT Status
-    try {
-        $h = git --help
-        $hasGit = $true
+    if( $hasGit ) {
         # Cue User
         Write-Host "Git is installed" -ForegroundColor Green
+        Write-Host "-- See Git at: https://git-scm.com/downloads" 
     }
-    catch {
+    else {
         # Cue User
         Write-Host "Git is not installed" -ForegroundColor Red
         Write-Host "Install Git from: https://git-scm.com/downloads" 
@@ -49,6 +48,66 @@ Function Show-GitQuickStart() {
 
     # Show Cheat Sheet
     Write-Host "See Git Cheat Sheet at: https://services.github.com/kit/downloads/github-git-cheat-sheet.pdf" 
+
+    # EOF
+}
+
+<#
+.Synopsis
+    Gets Quick Git Status
+#>
+Function Get-GitQuickStatus( [int]$Indents = 1 ) {
+    # var
+    [string[]]$status = $null
+    [string[]]$add = $null
+    [string[]]$upd = $null
+    [string[]]$rem = $null
+    $brn = $null
+
+    # Query git
+    $gs = git status
+
+
+    # Filter Levels
+    foreach( $m in $gs ) {
+        # Skip Empty Lines
+        if( $m.Trim().Length -eq 0 ) { continue }
+        # Replace Tab Char
+        $m = $m.Replace( "`t", "    " )
+        # Extract branch
+        if( $brn -eq $null ) {
+            $brn = $m.Substring( 10 )
+            continue
+        }
+        # Extract Changed Files
+        if( $m.StartsWith( "    new file:" ) ) {
+            $add += $m.Substring( 14 ).Trim()
+        }
+        if( $m.StartsWith( "    modified:" ) ) {
+            $upd += $m.Substring( 14 ).Trim()
+        }
+        if( $m.StartsWith( "    deleted:" ) ) {
+            $rem += $m.Substring( 14 ).Trim()
+        }
+        # Calc Indent
+        $i = ($m.Length - $m.TrimStart().Length) / 2
+        Write-Verbose "$($i.ToString( "#0" )) | $m"
+        # Add if in range
+        if( $i -lt $Indents ) { $status += $m }
+    }
+
+    # Build out
+    $hsh =[ordered]@{
+       'Branche'  = $brn
+       'Status'   = $status
+       'Added'    = $add
+       'Modified' = $upd
+       'Removed'  = $rem
+    }
+    $res = New-Object -TypeName PSObject -ArgumentList $hsh
+
+    # Write Pipeline
+    Write-Output $res
 
     # EOF
 }
