@@ -17,7 +17,7 @@ $Global:WitGitFlow = 'https://guides.github.com/introduction/flow'
 .Synopsis
    Opens a location for work
 #>
-function Open-Workspace {
+Function Open-Workspace {
     [CmdletBinding( DefaultParameterSetName='Workspace' )]
     [Alias( 'ows' )]
     Param(
