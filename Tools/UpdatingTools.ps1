@@ -15,9 +15,9 @@ $WitCanary = "S:\PSA_Sync\WindowsPowerShell\Modules\WindowsInsiderTools"
 
 <#
 .Synopsis
-    Returns the '\WindowsInsiderTools.psd1' version
+    Returns Versioning info of one or more Workspaces
  #>
-Function Get-WitModuleVersion() {
+Function Get-WorkspaceVersion() {
     [CmdletBinding( DefaultParameterSetName='Imported' )]
     [Alias( 'gwv' )]
     Param(
@@ -261,8 +261,8 @@ Function Show-Workspace {
         Write-Host
         Write-Host "Workspace version: Todo Version state colors"
         Write-Host "--------------------------------------------"
-        Write-Host "Workspace Version: $(Get-WitModuleVersion -Workspace)"
-        Write-Host "Imported  Version: $(Get-WitModuleVersion -Imported)"
+        Write-Host "Workspace Version: $(Get-WorkspaceVersion -Workspace)"
+        Write-Host "[OBS] Imported  Version: $(Get-WorkspaceVersion -Imported)"
         #Write-Host "Canary    Version: $(Get-WitModuleVersion -Canary)"
         Write-Host "GitHub    Version: Todo"
         Write-Host
