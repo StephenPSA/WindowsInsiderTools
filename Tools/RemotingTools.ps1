@@ -419,6 +419,11 @@ Function Enter-WitSession {
 .Example
    xwit TABLETPSA tab
 #>
+
+<#
+
+    Unfinished work, therefore Hidden
+
 Function Export-RemoteWindowsInsiderToolsModule {
     [Alias( 'xwit' )]
     [CmdletBinding( SupportsShouldProcess=$true, 
@@ -544,5 +549,6 @@ Function Export-RemoteWindowsInsiderToolsModule {
 
     End {}
 }
+#>
 
 # EOS

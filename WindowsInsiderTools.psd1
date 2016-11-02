@@ -92,8 +92,8 @@ FormatsToProcess = @( 'WindowsInsiderToolsTypes.Format.ps1xml' )
 AliasesToExport = @( 'gdh', 'gev', 'glb', 'gls', 'glw', 'gos', 'gosi', 'gwv'
                    , 'lgev',
                    , 'ggq', 'ows', 'sws', 'tda', 'tia', 'tla'
-                   , 'ewit', 'iwit', 'gwit', 'nwit', 'pwit', 'rwit', 'xwit', 'uwit'
-                   , 'som', 'sos', 'fet' )
+                   , 'ewit', 'iwit', 'gwit', 'nwit', 'pwit', 'rwit', 'uwit'
+                   , 'som' )
 
 # DSC resources to export from this module
 # DscResourcesToExport = @()
