@@ -1,5 +1,6 @@
-# WindowsInsiderTools - BETA 0.0.6.28
 # Under construction, use at own risk
+
+# WindowsInsiderTools - BETA 0.0.6.28
 + Nov, 2016
 
 Handy PowerShell Module for Windows Insider members
