@@ -7,6 +7,7 @@ Handy PowerShell Module for Windows Insider members
 See the improved Open-Workspace command for quickly changing Location, opening Web-pages 
 and getting Help
 
+# See Also:
 
 For Git CheatSheet, see: https://services.github.com/kit/downloads/github-git-cheat-sheet.pdf
 
