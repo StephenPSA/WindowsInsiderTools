@@ -1,7 +1,7 @@
 ﻿##=================================================================================================
 # File    : GeneralTools.ps1
 # Author  : StephenPSA
-# Version : 0.0.4.3
+# Version : 0.0.6.27
 # Date    : Nov, 2016
 #
 # Defines general Funcions
@@ -194,9 +194,6 @@ function Test-HasGitCommands {
         $c = Get-Command -Name git -ErrorAction SilentlyContinue
         $res = $res -and ($c -ne $null)
         if( $res ) {
-            Write-Verbose "Testing whether 'git' is a command..."
-        }
-        else {
             Write-Verbose "Testing whether 'git' is a running..."
             try {
                 $h = git --help

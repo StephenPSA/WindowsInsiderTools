@@ -1,7 +1,7 @@
 ﻿##=================================================================================================
 # File    : ContributerTools.ps1
 # Author  : StephenPSA
-# Version : 0.0.6.26
+# Version : 0.0.6.27
 # Date    : Nov, 2016
 #
 # Defines Funcions for WindowsInsiderTools contributers
@@ -9,20 +9,28 @@
 ##-------------------------------------------------------------------------------------------------
 #requires -Version 5.0
 
+# Global Variables
+$Global:WitGitSheet = 'https://services.github.com/kit/downloads/github-git-cheat-sheet.pdf'
+$Global:WitGitFlow = 'https://guides.github.com/introduction/flow'
+
 <#
 .Synopsis
    Opens a location for work
 #>
-function Open-Workspace {
-    [CmdletBinding( DefaultParameterSetName='Path' )]
+Function Open-Workspace {
+    [CmdletBinding( DefaultParameterSetName='Workspace' )]
     [Alias( 'ows' )]
     Param(
         # The Workspace to Goto or Open in Explorer
-        [Parameter( ParameterSetName='Workspace', Mandatory=$true, Position=0 )]
-        [WitWorkspace[]]$Workspace,
+        [Parameter( ParameterSetName='Workspace', Mandatory=$false, Position=0 )]
+        [WitWorkspace[]]$Workspace = [WitWorkspace]::WitModule,
 
         # The Path to Goto or Open in Explorer
-        [Parameter( ParameterSetName='Path', Mandatory=$true, Position=0 )]
+        [Parameter( ParameterSetName='Workspace', Mandatory=$false, Position=1 )]
+        [string]$Topic = '',
+
+        # The Path to Goto or Open in Explorer
+        [Parameter( ParameterSetName='Path', Mandatory=$true )]
         [string]$Path = '.'
     )
 
@@ -63,11 +71,13 @@ function Open-Workspace {
                     'WitImported'         { }
                     'WitUpdate'           { explorer "https://github.com/StephenPSA/WindowsInsiderTools" }
                     # Usefull Web-Sites     
+                    'GitHelp'             { git --help $Topic }
                     'GitHub'              { explorer "https://github.com/StephenPSA/WindowsInsiderTools" }
                     'Git'                 { explorer "https://git-scm.com" }
                     'PoshGit'             { explorer "https://github.com/dahlbyk/posh-git" }
                     'GitDesktop'          { explorer "https://desktop.github.com/" }
-                    'GitSheet'            { explorer "https://services.github.com/kit/downloads/github-git-cheat-sheet.pdf" }
+                    'GitSheet'            { explorer $Global:WitGitSheet }
+                    'GitFlow'             { explorer $Global:WitGitFlow }
                     Default {}
                 }
             }

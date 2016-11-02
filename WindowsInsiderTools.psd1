@@ -1,7 +1,7 @@
 ##=================================================================================================
 # File    : WindowsInsiderTools.psd1
 # Author  : StephenPSA
-# Version : 0.0.6.26
+# Version : 0.0.6.27
 # Date    : Oct, 2016
 #
 # Module manifest for module 'WindowsInsiderTools'
@@ -23,7 +23,7 @@
 RootModule = 'WindowsInsiderTools.psm1'
 
 # Version number of this module.
-ModuleVersion = '0.0.6.26'
+ModuleVersion = '0.0.6.27'
 
 # Supported PSEditions
 # CompatiblePSEditions = @()
@@ -91,7 +91,7 @@ FormatsToProcess = @( 'WindowsInsiderToolsTypes.Format.ps1xml' )
 # Aliases to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no aliases to export.
 AliasesToExport = @( 'gdh', 'gev', 'glb', 'gls', 'glw', 'gos', 'gosi', 'gwv'
                    , 'lgev',
-                   , 'ows', 'sws', 'tda', 'tia', 'tla'
+                   , 'ggq', 'ows', 'sws', 'tda', 'tia', 'tla'
                    , 'ewit', 'iwit', 'gwit', 'nwit', 'pwit', 'rwit', 'xwit', 'uwit'
                    , 'som', 'sos', 'fet' )
 

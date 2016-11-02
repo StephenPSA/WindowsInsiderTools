@@ -1,27 +1,18 @@
-# WindowsInsiderTools - BETA 0.0.6.26
+# WindowsInsiderTools - BETA 0.0.6.27
 # Under construction, use at own risk
 + Nov, 2016
 
 Handy PowerShell Module for Windows Insider members
 
+See the improved Open-Workspace command for quickly changing Location, opening Web-pages 
+and getting Help
 
-+ 0.0.6.13
-Test-HasGitCommands
- 
-+ 0.0.6.7
-Build from $PSVersionTable
+For Git CheatSheet, see: https://services.github.com/kit/downloads/github-git-cheat-sheet.pdf
 
-+ Older
-Git and PowerShell ISE : 0.0.6.6
-GitHub support         : 0.0.5.0
-Initial Population with: 0.0.4.x
+For Git Workflow, see: https://guides.github.com/introduction/flow
 
-See also: https://desktop.github.com/
+For Git Download, see: https://git-scm.com
 
-See also: https://git-scm.com
+For Git in Powershell, see: https://github.com/dahlbyk/posh-git
 
-See also: https://github.com/dahlbyk/posh-git
-
-See also: https://desktop.github.com/
-
-See also: https://services.github.com/kit/downloads/github-git-cheat-sheet.pdf
+For Git Desktop, see: https://desktop.github.com/
