@@ -9,12 +9,8 @@ and getting Help
 
 # See Also:
 
-For Git CheatSheet, see: https://services.github.com/kit/downloads/github-git-cheat-sheet.pdf
-
-For Git Workflow, see: https://guides.github.com/introduction/flow
-
-For Git Download, see: https://git-scm.com
-
-For Git in Powershell, see: https://github.com/dahlbyk/posh-git
-
-For Git Desktop, see: https://desktop.github.com/
++Git CheatSheet: https://services.github.com/kit/downloads/github-git-cheat-sheet.pdf
++Git Workflow: https://guides.github.com/introduction/flow
++Git Download: https://git-scm.com
++Git in Powershell: https://github.com/dahlbyk/posh-git
++Git Desktop: https://desktop.github.com/
