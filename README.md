@@ -24,11 +24,13 @@
 
 + This will get you...
     
+        PS >
         PS >Time     Type NN Machine    ID Source          Message                                                                                                                                      
         PS >----     ---- -- -------    -- ------          -------                                                                                                                                      
         PS >22:07:06 ERR  .  COMPPSA  1000 Application ... Faulting application name: taskhostw.exe, version: 10.0.14955.1000, time stamp: 0x58098a46...                                                
         PS >21:47:48 ERR  .  COMPPSA 10016 DCOM            The description for Event ID '10016' in Source 'DCOM' cannot be found.  The local computer may not have the necessary registry information...
         PS >21:15:04 wrn  .  COMPPSA   642 ESENT           wuaueng.dll (780) SUS20ClientDataStore: The database format feature version 8980 (0x2314) could not be used due to the current database fo...
+        PS >
 
 # See Also:
 
