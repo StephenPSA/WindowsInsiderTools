@@ -16,6 +16,8 @@ $Global:WitGitFlow = 'https://guides.github.com/introduction/flow'
 <#
 .Synopsis
    Opens a location for work
+
+   ows -InWork
 #>
 Function Open-Workspace {
     [CmdletBinding( DefaultParameterSetName='Workspace' )]
@@ -29,8 +31,12 @@ Function Open-Workspace {
         [Parameter( ParameterSetName='Workspace', Mandatory=$false, Position=1 )]
         [string]$Topic = '',
 
+        # Opens ISE Tabs for files known to be Add, Modified or Removed
+        [Parameter( ParameterSetName='InWork', Mandatory=$true, Position=0  )]
+        [Switch]$InWork,
+
         # The Path to Goto or Open in Explorer
-        [Parameter( ParameterSetName='Path', Mandatory=$true )]
+        [Parameter( ParameterSetName='Path', Mandatory=$true, Position=0  )]
         [string]$Path = '.'
     )
 
@@ -53,7 +59,25 @@ Function Open-Workspace {
             else {
                 Set-Location $Path
             }
+            # Done
         }
+        
+        # -- Shortcuts
+        if( $PSCmdlet.ParameterSetName -eq 'InWork' ) {
+            # Get the Added, Modified or Deleted Files
+            Write-Verbose "Querying Git..."
+            $gqs = Get-GitQuickStatus
+            $fs = $gqs.Modified
+            foreach( $f in $fs ) {
+                # vars
+                $p = ".\$f"
+                Write-Host $p
+                # Open
+                ise $p
+            }
+            # Done
+        }
+
         # -- WitWorkspace
         if( $PSCmdlet.ParameterSetName -eq 'Workspace' ) {
             # Walk so we can Open multiple Web-sites
