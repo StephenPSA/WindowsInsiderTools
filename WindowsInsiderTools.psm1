@@ -95,8 +95,8 @@ enum WitWorkspace {
     # Generic
     NotSet
     # Usefull Locations
-    MyDocuments
-    MyProjects
+    Documents
+    Projects
     # Usefull Locations
     Canary
     Imported
