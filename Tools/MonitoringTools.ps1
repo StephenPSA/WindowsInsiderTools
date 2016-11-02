@@ -1,7 +1,7 @@
 ﻿##=================================================================================================
 # File    : MonitoringTools.ps1
 # Author  : StephenPSA
-# Version : 0.0.3.15
+# Version : 0.0.6.29
 # Date    : Oct, 2016
 #
 # Defines general Funcions
@@ -48,10 +48,10 @@ function Show-OsMonitor {
             cls
             Write-Host "OS States and Event as of $([DateTime]::Now), NickName(s): $NickName"
             Write-Host "----------------------------------------------------------------------------------------------------------------"
-            gos -NickName $NickName -LocalNickName "." | sos
+            gos -NickName $NickName -LocalNickName "."
             # Show Recent Events
-            #$evs = gev -LastMinutes $LastMinutes -ShowInformation -LocalNickName 'XXX'
-            $evs = gev -LastMinutes $LastMinutes -ShowInformation -LocalNickName "."
+            $evs = gev -LastMinutes $LastMinutes -LocalNickName "."
+            # Report
             if( $evs.Count -eq 0 ) {
                 Write-Host "No events in the last $LastMinutes Minutes "
                 Write-Host

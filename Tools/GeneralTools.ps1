@@ -1,7 +1,7 @@
 ﻿##=================================================================================================
 # File    : GeneralTools.ps1
 # Author  : StephenPSA
-# Version : 0.0.6.27
+# Version : 0.0.6.29
 # Date    : Nov, 2016
 #
 # Defines general Funcions
@@ -289,6 +289,8 @@ Function Get-LastStartupTime() {
 .Example
    gos | Show-OsState or gos | sos
 #>
+<#
+        Obsolete by Format.ps1xml, therefore hidden
 Function Show-OsState {
     [CmdletBinding( DefaultParametersetName='Defense' )]
     [Alias( 'sos' )]
@@ -338,5 +340,6 @@ Function Show-OsState {
     }
    
 }
+#>
 
 # EOS
