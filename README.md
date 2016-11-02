@@ -4,13 +4,15 @@
 
 Handy PowerShell Module for Windows Insider members
 
+See the improved Open-Workspace command for quickly changing Location, opening Web-pages 
+and getting Help
 
-For Git CheatSheet,    see: https://services.github.com/kit/downloads/github-git-cheat-sheet.pdf
+For Git CheatSheet, see: https://services.github.com/kit/downloads/github-git-cheat-sheet.pdf
 
-For Git Workflow,      see: https://guides.github.com/introduction/flow
+For Git Workflow, see: https://guides.github.com/introduction/flow
 
-For Git Download,      see: https://git-scm.com
+For Git Download, see: https://git-scm.com
 
 For Git in Powershell, see: https://github.com/dahlbyk/posh-git
 
-For Git Desktop,       see: https://desktop.github.com/
+For Git Desktop, see: https://desktop.github.com/

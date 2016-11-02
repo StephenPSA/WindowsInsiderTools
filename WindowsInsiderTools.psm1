@@ -1,7 +1,7 @@
 ﻿##=================================================================================================
 # File    : WindowsInsiderTools.psm1
 # Author  : StephenPSA
-# Version : 0.0.6.7
+# Version : 0.0.6.27
 # Date    : Oct, 2016
 ##-------------------------------------------------------------------------------------------------
 #requires -Version 5.0
@@ -10,6 +10,7 @@
 using namespace System.Diagnostics
 using namespace System.Management.Automation
 using namespace Microsoft.Management.Infrastructure
+
 ##-------------------------------------------------------------------------------------------------
 # Enum
 enum DiskBusType {
@@ -103,8 +104,11 @@ enum WitWorkspace {
     WitModule
     WitImported
     WitUpdate
-    # Usefull Web-Sites
+    # Git workspaces and Web-Sites
+    GitHelp
     GitHub
+    GitSheet
+    GitFlow
     Git
     PoshGit
     GitDesktop

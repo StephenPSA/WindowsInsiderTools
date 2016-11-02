@@ -1,7 +1,7 @@
 ﻿##=================================================================================================
 # File    : GitTools.ps1
 # Author  : StephenPSA
-# Version : 0.0.6.14
+# Version : 0.0.6.27
 # Date    : Oct, 2016
 #
 # Defines Funcions connected to Git use
@@ -16,9 +16,11 @@
 <#
 .Synopsis
     Shows Wit Integration Status and help
-   Todo: Opens the GIT Cheat Sheet in Edge
 #>
 Function Show-GitQuickStart() {
+    [CmdletBinding()]
+    Param()
+
     # var
     $hasGit = Test-HasGitCommands
 
@@ -46,8 +48,12 @@ Function Show-GitQuickStart() {
         Write-Host "Posh Git is installed: Version: $($pg.Version)" -ForegroundColor Green
     }
 
-    # Show Cheat Sheet
-    Write-Host "See Git Cheat Sheet at: https://services.github.com/kit/downloads/github-git-cheat-sheet.pdf" 
+    if( $Global:VerbosePreference ) {
+        # 
+
+        # Show Cheat Sheet
+        Write-Verbose "Open the Git Cheat Sheet by typing: ows GitSheet" 
+    }
 
     # EOF
 }
@@ -56,7 +62,13 @@ Function Show-GitQuickStart() {
 .Synopsis
     Gets Quick Git Status
 #>
-Function Get-GitQuickStatus( [int]$Indents = 1 ) {
+Function Get-GitQuickStatus() {
+    [Alias( 'ggq' )]
+    Param(
+        # 
+        [int]$Indents = 1
+    )
+
     # var
     [string[]]$status = $null
     [string[]]$add = $null

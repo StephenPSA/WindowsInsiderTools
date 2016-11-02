@@ -91,7 +91,7 @@ FormatsToProcess = @( 'WindowsInsiderToolsTypes.Format.ps1xml' )
 # Aliases to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no aliases to export.
 AliasesToExport = @( 'gdh', 'gev', 'glb', 'gls', 'glw', 'gos', 'gosi', 'gwv'
                    , 'lgev',
-                   , 'ows', 'sws', 'tda', 'tia', 'tla'
+                   , 'ggq', 'ows', 'sws', 'tda', 'tia', 'tla'
                    , 'ewit', 'iwit', 'gwit', 'nwit', 'pwit', 'rwit', 'xwit', 'uwit'
                    , 'som', 'sos', 'fet' )
 
