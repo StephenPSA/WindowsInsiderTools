@@ -1,4 +1,4 @@
-# WindowsInsiderTools - BETA 0.0.6.27
+# WindowsInsiderTools - BETA 0.0.6.28
 # Under construction, use at own risk
 + Nov, 2016
 
@@ -6,6 +6,7 @@ Handy PowerShell Module for Windows Insider members
 
 See the improved Open-Workspace command for quickly changing Location, opening Web-pages 
 and getting Help
+
 
 For Git CheatSheet, see: https://services.github.com/kit/downloads/github-git-cheat-sheet.pdf
 

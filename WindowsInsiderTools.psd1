@@ -1,7 +1,7 @@
 ##=================================================================================================
 # File    : WindowsInsiderTools.psd1
 # Author  : StephenPSA
-# Version : 0.0.6.27
+# Version : 0.0.6.28
 # Date    : Oct, 2016
 #
 # Module manifest for module 'WindowsInsiderTools'
@@ -23,7 +23,7 @@
 RootModule = 'WindowsInsiderTools.psm1'
 
 # Version number of this module.
-ModuleVersion = '0.0.6.27'
+ModuleVersion = '0.0.6.28'
 
 # Supported PSEditions
 # CompatiblePSEditions = @()
@@ -35,10 +35,10 @@ GUID = 'ecd644ea-aa24-4b1d-8ac0-faee7f287162'
 Author = 'StephenPSA'
 
 # Company or vendor of this module
-CompanyName = 'PSA Software Service'
+CompanyName = ''
 
 # Copyright statement for this module
-Copyright = '(c)2016 PSA Software Service. All rights reserved.'
+Copyright = 'Use at will, but at own risk (BETA!)'
 
 # Description of the functionality provided by this module
 Description = 'Handy functions for Windows Insider members'
