@@ -97,6 +97,9 @@ enum WitWorkspace {
     # Usefull Locations
     Documents
     Projects
+    # PowerShell (ISE)
+    PsModules
+    PsIseTab
     # Usefull Locations
     Canary
     Imported
