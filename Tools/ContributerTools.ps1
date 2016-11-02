@@ -61,11 +61,14 @@ Function Open-Workspace {
                 switch( $ws ) {
                     '' {}
                     # Usefull Locations
-                    'MyDocuments'         { Set-Location "$HOME\Documents" }
-                    'MyProjects'          { Set-Location "$HOME\Documents\Visual Studio 15\Projects" }
+                    'Documents'           { Set-Location "$HOME\Documents" }
+                    'Projects'            { Set-Location "$HOME\Documents\Visual Studio 15\Projects" }
                     # Usefull Locations     
-                    'Canary'              { }
-                    'Imported'            { }
+                    'Canary'              { Write-Host "Todo: " }
+                    'Imported'            { Write-Host "Todo: " }
+                    # PowerShell (ISE)
+                    'PsModules'           { Set-Location "$HOME\Documents\WindowsPowerShell\Modules" }
+                    'PsIseTab'            { ise $Topic }
                     # WIT                   
                     'WitModule'           { Set-Location "$HOME\Documents\WindowsPowerShell\Modules\WindowsInsiderTools" }
                     'WitImported'         { }

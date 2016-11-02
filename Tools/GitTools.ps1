@@ -48,7 +48,7 @@ Function Show-GitQuickStart() {
         Write-Host "Posh Git is installed: Version: $($pg.Version)" -ForegroundColor Green
     }
 
-    if( $Global:VerbosePreference ) {
+    if( $PSBoundParameters['Verbose'] ) {
         # 
 
         # Show Cheat Sheet

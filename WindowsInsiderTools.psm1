@@ -95,8 +95,11 @@ enum WitWorkspace {
     # Generic
     NotSet
     # Usefull Locations
-    MyDocuments
-    MyProjects
+    Documents
+    Projects
+    # PowerShell (ISE)
+    PsModules
+    PsIseTab
     # Usefull Locations
     Canary
     Imported
