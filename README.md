@@ -18,6 +18,18 @@
         PS >.  COMPPSA Computer PSA  13,0 GB SSD  Healthy  47,2 GB Fast 10.0.14955.1000 Win 10 Pro 64-bit Todo 1.231.1020.0  Nov 2   Quick
         PS >
 
++ To get recent Errors and Warnings from the System and Application EventLogs:
+
+        PS >gev
+
++ This will get you...
+    
+        PS >Time     Type NN Machine    ID Source          Message                                                                                                                                      
+        PS >----     ---- -- -------    -- ------          -------                                                                                                                                      
+        PS >22:07:06 ERR  .  COMPPSA  1000 Application ... Faulting application name: taskhostw.exe, version: 10.0.14955.1000, time stamp: 0x58098a46...                                                
+        PS >21:47:48 ERR  .  COMPPSA 10016 DCOM            The description for Event ID '10016' in Source 'DCOM' cannot be found.  The local computer may not have the necessary registry information...
+        PS >21:15:04 wrn  .  COMPPSA   642 ESENT           wuaueng.dll (780) SUS20ClientDataStore: The database format feature version 8980 (0x2314) could not be used due to the current database fo...
+
 # See Also:
 
 + Git CheatSheet: https://services.github.com/kit/downloads/github-git-cheat-sheet.pdf
