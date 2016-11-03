@@ -222,11 +222,12 @@ Function New-GitCommit {
 
         # Commit
         $cmmnt = [String]::Join( ";", $Comment )
-        $res = git commit -m $cmmnt
-        # Check Commit Result
-        if( $res -ne $null ) {
-            Write-Warning $res
-        }
+        # - Hides Error Message
+        $res = git commit -m $cmmnt  2>>$null
+        ### Superfluous # Check Commit Result
+        ### Superfluous if( $res -ne $null ) {
+        ### Superfluous     Write-Verbose $res
+        ### Superfluous }
 
 
 
