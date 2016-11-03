@@ -1,10 +1,10 @@
 ﻿##=================================================================================================
-# File    : GitTools.ps1
+# File    : PowerShellTools.ps1
 # Author  : StephenPSA
 # Version : 0.0.6.33
 # Date    : Oct, 2016
 #
-# Defines Funcions connected to Git use
+# Defines Funcions connected to Git under PowerShell (ISE) use.
 #
 # See:
 #    Git Cheat Sheet                 - https://services.github.com/kit/downloads/github-git-cheat-sheet.pdf

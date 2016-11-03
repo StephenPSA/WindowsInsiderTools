@@ -221,7 +221,8 @@ Function New-GitCommit {
         }
 
         # Commit
-        $res = git commit -m $Comment
+        $cmmnt = [String]::Join( ";", $Comment )
+        $res = git commit -m $cmmnt
         # Check Commit Result
         if( $res -ne $null ) {
             Write-Warning $res
