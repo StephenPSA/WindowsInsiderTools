@@ -6,8 +6,8 @@
 
 # HOT
 
-+ New-GitBranche (ngb [-NewRevision]) - help ngb
-+ Open-Workspace (ows [-InWork]) - help ows
++ New-GitBranche (ngb [-NewRevision]) - help ngb -ShowWindow
++ Open-Workspace (ows [-UnCommitted] [-InWork]) - help ows -ShowWindow
 
 
 # Summary

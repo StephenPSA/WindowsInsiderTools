@@ -71,6 +71,7 @@ Function Show-GitQuickStart() {
     Gets Quick Git Status
 #>
 Function Get-GitQuickStatus() {
+    [CmdletBinding()]
     [Alias( 'ggq' )]
     Param(
         # 
@@ -86,7 +87,10 @@ Function Get-GitQuickStatus() {
 
     # Query git
     $gs = git status
-
+    ### Verbose
+    if( $PSBoundParameters.Verbose ) {
+        Write-Verbose 'Gotcha!'
+    }
 
     # Filter Levels
     foreach( $m in $gs ) {

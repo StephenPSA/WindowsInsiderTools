@@ -15,6 +15,8 @@
 
 # Global Variables - Todo: Consolodate this into a WitPreferences Class
 
+#using static namespace System.String
+
 <#
 .Synopsis
    Opens a Workspace for work
@@ -80,11 +82,13 @@ Function Open-Workspace {
             # Get the Added, Modified or Deleted Files
             Write-Verbose "Querying Git for Uncommited work..."
             $gqs = Get-GitQuickStatus
-            $fs = $gqs.Added, $gqs.Modified, $gqs.Removed
+            $fs = $gqs.Added + $gqs.Modified + $gqs.Removed
             foreach( $f in $fs ) {
+                # Skip Empties
+                if( $f.Length -eq 0 ) { continue }
                 # vars
                 $p = ".\$f"
-                Write-Host $p
+                Write-Verbose "New Tab: $p"
                 # Open
                 $hr = ise $p
                 Write-Output $hr
