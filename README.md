@@ -9,8 +9,8 @@
 + New-GitBranche (ngb) [-NewRevision]
 + Example: PS >ngb -NewRevision
 
-+ New-GitCommit (ngx) [-Commend] <comment>
-+ Example: PS >ngb -NewRevision
++ New-GitCommit (ngc) [-Commend] <comment>
++ Example: PS >ngc 'README.md Updates'
 
 + Open-Workspace (ows) [-UnCommitted]
 + Example: PS >ows githelp commit
