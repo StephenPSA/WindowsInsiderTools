@@ -4,9 +4,17 @@
 
 + Handy PowerShell Module for Windows Insider members
 
+# HOT
+
++ New-GitBranche (ngb [-NewRevision]) - help ngb
++ Open-Workspace (ows [-InWork]) - help ows
+
+
 # Summary
 
 + in work...
++ PowerShell, Git and (optional) Posh-Git integration
++ Improved PowerShell (ISE) usage: See Workspaces
 
 # Introduction
 
