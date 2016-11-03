@@ -42,6 +42,10 @@ Function Open-Workspace {
         [Parameter( ParameterSetName='Workspace', Mandatory=$false, Position=1 )]
         [string]$Topic = '',
 
+        # Opens the GitHub Issue by Number
+        [Parameter( ParameterSetName='IssueNr', Mandatory=$false, Position=1 )]
+        [int]$IssueNr,
+
         # Opens ISE Tabs for files known to be Added, Modified or Removed, but not yet Committed
         [Parameter( ParameterSetName='Uncommitted', Mandatory=$true )]
         [Switch]$Uncommitted,
@@ -77,6 +81,16 @@ Function Open-Workspace {
             # Done
         }
         
+        # -- Shortcut - IssueNr
+        if( $PSCmdlet.ParameterSetName -eq 'IssueNr' ) {
+            # Vars
+            $url = "$Global:WitGitHub/issues/$IssueNr"
+            # Get the Added, Modified or Deleted Files
+            Write-Verbose "Opening Website: '$url'..."
+            explorer $url
+            # Done
+        }
+
         # -- Shortcut - Uncommitted
         if( $PSCmdlet.ParameterSetName -eq 'Uncommitted' ) {
             # Get the Added, Modified or Deleted Files
@@ -99,7 +113,7 @@ Function Open-Workspace {
         # -- Shortcut - InWork
         if( $PSCmdlet.ParameterSetName -eq 'InWork' ) {
             # Get the Added, Modified or Deleted Files
-            Write-Warning "[Obsolete] Use -Uncommitted instead"
+            Write-Warning "[Deprecated] Use -Uncommitted instead"
             #Write-Verbose "Querying Git..."
             #$gqs = Get-GitQuickStatus
             #$fs = $gqs.Modified
@@ -126,8 +140,14 @@ Function Open-Workspace {
                     'Documents'           { Set-Location "$HOME\Documents" }
                     'Projects'            { Set-Location "$HOME\Documents\Visual Studio 15\Projects" }
                     'PsModules'           { Set-Location "$HOME\Documents\WindowsPowerShell\Modules" }
-                    # Git
-                    'GitBranch'           { git checkout $Topic }
+                    # Git Integration
+                    'Branch'              { git checkout $Topic }
+                    'Issue'               { 
+                                            $url = "$Global:WitGitHub/issues"
+                                            if( $Topic.Length -ne 0 ) { $url += "/$Topic" }
+                                            Write-Verbose "Opening '$url'..."
+                                            explorer $url
+                                          }
                     # Usefull Locations     
                     'Canary'              { Write-Host "Todo: " }
                     'Imported'            { Write-Host "Todo: " }

@@ -98,7 +98,8 @@ enum WitWorkspace {
     Documents
     Projects
     PsModules
-    GitBranch
+    Branch
+    Issue
     # PowerShell (ISE)
     Tab
     # Usefull Locations
