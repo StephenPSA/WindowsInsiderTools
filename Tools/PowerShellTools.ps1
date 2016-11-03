@@ -44,6 +44,7 @@
 Function Open-Workspace {
     [CmdletBinding( DefaultParameterSetName='Workspace' )]
     [Alias( 'ows' )]
+    [OutputType( [object] )]
     Param(
         # The Workspace to Goto or Open in Explorer
         [Parameter( ParameterSetName='Workspace', Mandatory=$false, Position=0 )]
@@ -71,6 +72,9 @@ Function Open-Workspace {
     )
 
     Begin {
+        # var
+        [System.Object]$res = $null
+
         ## Go
         #switch( $PSCmdlet.ParameterSetName ) {
         #    '
@@ -152,7 +156,7 @@ Function Open-Workspace {
                     'Projects'            { Set-Location "$HOME\Documents\Visual Studio 15\Projects" }
                     'PsModules'           { Set-Location "$HOME\Documents\WindowsPowerShell\Modules" }
                     # Git Integration
-                    'Branch'              { git checkout $Topic }
+                    'Branch'              { $res = git checkout $Topic 1>>$null }
                     'Issue'               { 
                                             $url = "$Global:WitGitHub/issues"
                                             if( $Topic.Length -ne 0 ) { $url += "/$Topic" }
@@ -180,10 +184,16 @@ Function Open-Workspace {
                 }
             }
         }
+
+        # EOP
     }
 
     End {
+        # Ignore if no result
+        if( $res -ne $null ) { Write-Output $res }
     }
+
+    # EOF
 }
 
 # EOS
