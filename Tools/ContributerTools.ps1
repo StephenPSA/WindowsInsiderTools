@@ -32,11 +32,11 @@ Function Open-Workspace {
         [string]$Topic = '',
 
         # Opens ISE Tabs for files known to be Add, Modified or Removed
-        [Parameter( ParameterSetName='InWork', Mandatory=$true, Position=0  )]
+        [Parameter( ParameterSetName='InWork', Mandatory=$true )]
         [Switch]$InWork,
 
         # The Path to Goto or Open in Explorer
-        [Parameter( ParameterSetName='Path', Mandatory=$true, Position=0  )]
+        [Parameter( ParameterSetName='Path', Mandatory=$true )]
         [string]$Path = '.'
     )
 
