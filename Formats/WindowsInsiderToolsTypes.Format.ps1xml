@@ -5,7 +5,7 @@
 <Configuration>
     <ViewDefinitions>
 
-        <!-- -->
+        <!-- OsStateClass -->
         <View>
             <Name>Default</Name>
             <ViewSelectedBy>
@@ -147,7 +147,7 @@
             </TableControl>
         </View>
 
-        <!-- -->
+        <!-- EventInfoClass -->
         <View>
             <Name>Default</Name>
             <ViewSelectedBy>
@@ -177,10 +177,10 @@
                         <Label>ID</Label>
                         <Alignment>Right</Alignment>
                     </TableColumnHeader>
-                    <!-- -->
+                    <!-- Source -->
                     <TableColumnHeader>
                         <Label>Source</Label>
-                        <Width>15</Width>
+                        <Width>20</Width>
                     </TableColumnHeader>
                     <!-- -->
                     <TableColumnHeader>
@@ -216,6 +216,7 @@
                                 <ScriptBlock>
                                     $txt = $_.Source.Replace( "Microsoft-Windows-WindowsUpdateClient", "  --UPDATER--" )
                                     $txt = $txt.Replace( "Microsoft", "MS" )
+                                    $txt = $txt.Replace( "Windows", "WS" )
                                     if( $txt.Length -le 15 ) { $txt } 
                                     else                     { $txt.SubString( 0, 12 ) + "..." }
                                 </ScriptBlock>
