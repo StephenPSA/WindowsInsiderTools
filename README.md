@@ -1,6 +1,6 @@
 # Under construction, use at own risk
 
-# WindowsInsiderTools - BETA 0.0.6.31, Nov 2016
+# WindowsInsiderTools - BETA 0.0.6.32, Nov 2016
 
 + Handy PowerShell Module for Windows Insider members
 
@@ -37,8 +37,7 @@
 
         PS >gev
 
-+ This will get you...Please note that you see Events from multiple machines (Todo: time sort)
-NN = NickName
++ This will get you...Please note that you see Events from multiple machines ( NN = NickName ) - Todo: time sort
     
         PS >
         PS >Time     Type NN  Machine      ID Source          Message                                                                                                                                   

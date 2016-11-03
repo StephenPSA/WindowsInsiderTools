@@ -1,7 +1,7 @@
 ﻿##=================================================================================================
 # File    : WindowsInsiderTools.psm1
 # Author  : StephenPSA
-# Version : 0.0.6.27
+# Version : 0.0.6.32
 # Date    : Oct, 2016
 ##-------------------------------------------------------------------------------------------------
 #requires -Version 5.0
@@ -97,9 +97,10 @@ enum WitWorkspace {
     # Usefull Locations
     Documents
     Projects
-    # PowerShell (ISE)
     PsModules
-    PsIseTab
+    GitBranch
+    # PowerShell (ISE)
+    Tab
     # Usefull Locations
     Canary
     Imported
