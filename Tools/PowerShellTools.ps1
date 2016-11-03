@@ -156,7 +156,7 @@ Function Open-Workspace {
                     'Projects'            { Set-Location "$HOME\Documents\Visual Studio 15\Projects" }
                     'PsModules'           { Set-Location "$HOME\Documents\WindowsPowerShell\Modules" }
                     # Git Integration
-                    'Branch'              { $res = git checkout $Topic 1>>$null }
+                    'Branch'              { $res = git checkout $Topic 2>>$null }
                     'Issue'               { 
                                             $url = "$Global:WitGitHub/issues"
                                             if( $Topic.Length -ne 0 ) { $url += "/$Topic" }
