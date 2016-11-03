@@ -99,16 +99,20 @@ Function Open-Workspace {
         # -- Shortcut - InWork
         if( $PSCmdlet.ParameterSetName -eq 'InWork' ) {
             # Get the Added, Modified or Deleted Files
-            Write-Verbose "Querying Git..."
-            $gqs = Get-GitQuickStatus
-            $fs = $gqs.Modified
-            foreach( $f in $fs ) {
-                # vars
-                $p = ".\$f"
-                Write-Host $p
-                # Open
-                ise $p
-            }
+            Write-Warning "[Obsolete] Use -Uncommitted instead"
+            #Write-Verbose "Querying Git..."
+            #$gqs = Get-GitQuickStatus
+            #$fs = $gqs.Modified
+            #$fs = $gqs.Added + $gqs.Modified + $gqs.Removed
+            #foreach( $f in $fs ) {
+            #    # Skip Empties
+            #    if( $f.Length -eq 0 ) { continue }
+            #    # vars
+            #    $p = ".\$f"
+            #    Write-Host $p
+            #    # Open
+            #    ise $p
+            #}
             # Done
         }
 
