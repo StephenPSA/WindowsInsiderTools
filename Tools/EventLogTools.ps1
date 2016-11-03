@@ -255,7 +255,7 @@ Function Get-LocalEventInfo() {
         Write-Verbose "Done: $($PSCmdlet.ParameterSetName), '$($res.Count)' events found."
     }  
 }
-#help Get-LocalEventInfo -ShowWindow
+# help Get-LocalEventInfo -ShowWindow
 
 <# 
 .Synopsis
@@ -439,12 +439,15 @@ Function Get-EventInfo() {
         Write-Output $res
     }
 }
-#help Get-EventInfo -ShowWindow
+# help Get-EventInfo -ShowWindow
 
 <# 
 .Synopsis
     Formats EventInfoClass inout into a table
 #>
+<#
+    Obsolete therefor hidden
+
 Function Format-EventInfoTable() {
     [Alias( 'fet' )]
     Param(
@@ -467,5 +470,6 @@ Function Format-EventInfoTable() {
                         -ExcludeProperty PSComputerName, RunspaceId, PSSourceJobInstanceId, NickName, MachineName, EntryTime | ft
     }
 }
+#>
 
 # EOS
