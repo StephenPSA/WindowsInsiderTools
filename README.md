@@ -6,8 +6,13 @@
 
 # HOT
 
-+ New-GitBranche (ngb [-NewRevision]) - help ngb -ShowWindow
-+ Open-Workspace (ows [-UnCommitted] [-InWork]) - help ows -ShowWindow
++ New-GitBranche (ngb) [-NewRevision]
++ Example: PS >ngb -NewRevision
+
++ New-GitCommit (ngx) [-Commend] <comment>
++ Example: PS >ngb -NewRevision
+
++ Open-Workspace (ows) [-UnCommitted]
 + Example: PS >ows githelp commit
 + Example: PS >ows tab .\README.md
 + Example: PS >ows Issue
