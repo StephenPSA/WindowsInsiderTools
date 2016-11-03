@@ -8,9 +8,8 @@
 
 + New-GitBranche (ngb [-NewRevision]) - help ngb -ShowWindow
 + Open-Workspace (ows [-UnCommitted] [-InWork]) - help ows -ShowWindow
-
-### Example: ows Issue
-### Example: ows Issue 42
++ Example: ows Issue
++ Example: ows Issue 42
 
 # Summary
 
