@@ -18,6 +18,18 @@
         PS >.  COMPPSA Computer PSA  13,0 GB SSD  Healthy  47,2 GB Fast 10.0.14955.1000 Win 10 Pro 64-bit Todo 1.231.1020.0  Nov 2   Quick
         PS >
 
++ Now start a WitSession to another machine...
+    
+        PS >
+        PS ># Tip: nwit TABLETPSA tab
+        PS >New-WitSession -ComputerName TABLETPSA tab
+        PS > ...
+        PS >gos
+
+        PS >NN Machine Description  Mem-Free Disk Status  Vol-Free Ring OS-Build        OS-Edition Arch.  Act  AV-Definition Scanned Scan 
+        PS >-- ------- -----------  -------- ---- ------  -------- ---- --------        ---------- -----  ---  ------------- ------- ---- 
+        PS >
+
 + To get recent Errors and Warnings from the System and Application EventLogs:
 
         PS >gev
