@@ -151,7 +151,7 @@ Function New-GitBranch {
                     Position=0)]
         [Switch]$NewRevision
 
-        # Forces 
+        # Force 
     )
 
     Begin {
@@ -167,6 +167,76 @@ Function New-GitBranch {
     End {
     }
 
+}
+
+<#
+.Synopsis
+   Stages and Commits all Uncommitted work
+.Exapmple
+    ngc 'My commit comment'
+
+
+#>
+Function New-GitCommit {
+    [CmdletBinding( SupportsShouldProcess=$true )]
+    [Alias( 'ngc' )]
+    [OutputType([object])]
+    Param(
+        # If set, names the new branch
+        [Parameter( Mandatory=$true,
+                    ValueFromPipelineByPropertyName=$true,
+                    Position=0)]
+        [AllowEmptyCollection()]
+        [ValidateCount( 0,5 )]
+        [string[]]$Comment
+
+        # Force 
+    )
+
+    Begin {
+        # vars
+        $res = $null
+
+        # Ignore empty
+        if( $Comment.Count -eq 0 ) { return }
+
+        # Requires Git
+        if( !(Test-HasGitCommands) ) {
+            Write-Error "Aaarrgh! You got me, i.e. Todo:"
+            Write-Warning "Git is nit installed, Type 'xxx' to get more help"
+            return
+        }
+    }
+
+    Process {
+        # Ignore empty
+        if( $Comment.Count -eq 0 ) { return }
+
+        # Stage
+        $res = git add *
+        #Invoke-Command { git add * } -ErrorVariable hres
+        # Check Staging Result
+        if( $res -ne $null ) {
+            Write-Warning $res
+        }
+
+        # Commit
+        $res = git commit -m $Comment
+        # Check Commit Result
+        if( $res -ne $null ) {
+            Write-Warning $res
+        }
+
+
+
+    }
+
+    End {
+        # Write to Pipeline - Ignore empty
+        if( $res -ne $null ) { Write-Output $res }
+    }
+    
+    # EOF
 }
 
 # EOS

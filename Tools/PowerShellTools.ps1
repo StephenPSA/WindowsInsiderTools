@@ -19,16 +19,27 @@
 
 <#
 .Synopsis
-   Opens a Workspace for work
+   Opens a Workspace for work (help ows -ShowWindow)
 .Example
-   ows -InWork
+   ows -Uncommitted
 
-   Open PowerShell ISE Tabs for all files in 'work' (as seen by Git)
+   Open PowerShell ISE Tabs for all files that are not yet committed
 
 .Example
-   ows PsIseTab .\README.md
+   ows Tab .\README.md
 
    Open PowerShell ISE Tabs for file: .\README.md
+
+.Example 
+    ows Issue
+
+    Open the Browser at the List of active Issues
+
+.Example 
+    ows Issue 42
+
+    Open the Browser at a specific Issue
+
 #>
 Function Open-Workspace {
     [CmdletBinding( DefaultParameterSetName='Workspace' )]

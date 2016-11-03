@@ -93,7 +93,7 @@ AliasesToExport = @( 'gdh', 'gev', 'glb', 'gls', 'glw', 'gos', 'gosi', 'gwv'
                    , 'lgev',
                    , 'ggq', 'ows', 'sws', 'tda', 'tia', 'tla'
                    , 'ewit', 'iwit', 'gwit', 'nwit', 'pwit', 'rwit', 'uwit'
-                   , 'ngb',
+                   , 'ngb', 'ngc',
                    , 'som' )
 
 # DSC resources to export from this module
