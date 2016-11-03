@@ -1,7 +1,7 @@
 ##=================================================================================================
 # File    : WindowsInsiderTools.psd1
 # Author  : StephenPSA
-# Version : 0.0.6.32
+# Version : 0.0.6.33
 # Date    : Oct, 2016
 #
 # Module manifest for module 'WindowsInsiderTools'
@@ -23,7 +23,7 @@
 RootModule = 'WindowsInsiderTools.psm1'
 
 # Version number of this module.
-ModuleVersion = '0.0.6.32'
+ModuleVersion = '0.0.6.33'
 
 # Supported PSEditions
 # CompatiblePSEditions = @()
@@ -93,6 +93,7 @@ AliasesToExport = @( 'gdh', 'gev', 'glb', 'gls', 'glw', 'gos', 'gosi', 'gwv'
                    , 'lgev',
                    , 'ggq', 'ows', 'sws', 'tda', 'tia', 'tla'
                    , 'ewit', 'iwit', 'gwit', 'nwit', 'pwit', 'rwit', 'uwit'
+                   , 'ngb',
                    , 'som' )
 
 # DSC resources to export from this module
