@@ -9,15 +9,24 @@
 ##-------------------------------------------------------------------------------------------------
 #requires -Version 5.0
 
-# Global Variables
+# Global Variables - Todo: Consolodate this into a WitPreferences Class
 $Global:WitGitSheet = 'https://services.github.com/kit/downloads/github-git-cheat-sheet.pdf'
 $Global:WitGitFlow = 'https://guides.github.com/introduction/flow'
+$Global:WitGitHub = 'https://github.com/StephenPSA/WindowsInsiderTools'
+#                    https://github.com/StephenPSA/WindowsInsiderTools/tree/V-0-0-6-31
 
 <#
 .Synopsis
-   Opens a location for work
-
+   Opens a Workspace for work
+.Example
    ows -InWork
+
+   Open PowerShell ISE Tabs for all files in 'work' (as seen by Git)
+
+.Example
+   ows PsIseTab .\README.md
+
+   Open PowerShell ISE Tabs for file: .\README.md
 #>
 Function Open-Workspace {
     [CmdletBinding( DefaultParameterSetName='Workspace' )]
@@ -99,7 +108,7 @@ Function Open-Workspace {
                     'WitUpdate'           { explorer "https://github.com/StephenPSA/WindowsInsiderTools" }
                     # Usefull Web-Sites     
                     'GitHelp'             { git --help $Topic }
-                    'GitHub'              { explorer "https://github.com/StephenPSA/WindowsInsiderTools" }
+                    'GitHub'              { explorer "$Global:WitGitHub/tree/$((ggq).Branche)" }
                     'Git'                 { explorer "https://git-scm.com" }
                     'PoshGit'             { explorer "https://github.com/dahlbyk/posh-git" }
                     'GitDesktop'          { explorer "https://desktop.github.com/" }
