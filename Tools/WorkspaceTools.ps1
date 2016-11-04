@@ -28,12 +28,19 @@ $Global:WitGitHub   = 'https://github.com/StephenPSA/WindowsInsiderTools'
    Open PowerShell ISE Tabs for file: .\README.md
 #>
 Function Open-Workspace {
-    [CmdletBinding( DefaultParameterSetName='Workspace' )]
+    [CmdletBinding( DefaultParameterSetName='ByPath' )]
     [Alias( 'ows' )]
     Param(
+
+        # The Path to Goto or Open in Explorer
+        [Parameter( ParameterSetName='ByPath', Mandatory=$true, Position=0 )]
+        [Alias( 'p' )]
+        [string[]]$Path,
+
         # The Workspace to Goto or Open in Explorer
         [Parameter( ParameterSetName='Workspace', Mandatory=$false, Position=0 )]
-        [WitWorkspace[]]$Workspace = [WitWorkspace]::WitModule,
+        [Alias( 'w' )]
+        [WitWorkspace[]]$Workspace, # = [WitWorkspace]::WitModule,
 
         # The Path to Goto or Open in Explorer
         [Parameter( ParameterSetName='Workspace', Mandatory=$false, Position=1 )]
@@ -41,15 +48,12 @@ Function Open-Workspace {
 
         # Opens ISE Tabs for files known to be Added, Modified or Removed, but not yet Committed
         [Parameter( ParameterSetName='Uncommitted', Mandatory=$true )]
+        [Alias( 'u' )]
         [Switch]$Uncommitted,
 
         # Opens ISE Tabs for files known to be Added, Modified or Removed (Todo)
         [Parameter( ParameterSetName='InWork', Mandatory=$true )]
-        [Switch]$InWork,
-
-        # The Path to Goto or Open in Explorer
-        [Parameter( ParameterSetName='Path', Mandatory=$true )]
-        [string]$Path = '.'
+        [Switch]$InWork
     )
 
     Begin {
@@ -64,12 +68,27 @@ Function Open-Workspace {
         # Select Param set
         # -- Generic
         if( $PSCmdlet.ParameterSetName -eq 'Path' ) {
-            # Location or Browser
-            if( $Path.StartsWith( 'http' ) ) {
-                explorer $Path
-            }
-            else {
-                Set-Location $Path
+            # Walk Path(s)
+            foreach( $pth in $Path ) {
+                # Location or Browser
+                if( $pth.StartsWith( 'http' ) ) {
+                    explorer $pth
+                }
+                else {
+                    # vars
+                    $w = Get-Item $pth
+
+                    # Folder
+                    if( $w -is [Windows.Storage.StorageFolder] ) {
+                        Set-Location $pth
+                    }
+
+                    # File
+                    if( $pth.EndsWith( ".ps1" ) ) {
+                        Write-Host "Todo...deloo...."
+                    }
+
+                }
             }
             # Done
         }

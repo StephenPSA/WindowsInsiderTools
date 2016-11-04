@@ -6,17 +6,7 @@
 
 ## HOT
 
-* New-GitBranche (ngb) [-NewRevision]
-* Example: PS >ngb -NewRevision
-
-+ New-GitCommit (ngc) [-Commend] <comment>
-+ Example: PS >ngc 'README.md Updates'
-
-+ Open-Workspace (ows) [-UnCommitted]
-+ Example: PS >ows githelp commit
-+ Example: PS >ows tab .\README.md
-+ Example: PS >ows Issue
-+ Example: PS >ows Issue 42
++ Just plodding along...
 
 # Summary
 
