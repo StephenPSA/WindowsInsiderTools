@@ -1,7 +1,7 @@
 ﻿##=================================================================================================
 # File    : UpdatingTools.psm1
 # Author  : StephenPSA
-# Version : 0.0.6.15
+# Version : 0.0.6.34
 # Date    : Oct, 2016, II
 #
 # Publish, Distribute
@@ -262,8 +262,9 @@ Function Show-Workspace {
         Write-Host "Workspace version: Todo Version state colors"
         Write-Host "--------------------------------------------"
         Write-Host "Workspace Version: $(Get-WorkspaceVersion -Workspace)"
-        Write-Host "[OBS] Imported  Version: $(Get-WorkspaceVersion -Imported)"
+        Write-Host "Imported  Version: $(Get-WorkspaceVersion -Imported)"
         #Write-Host "Canary    Version: $(Get-WitModuleVersion -Canary)"
+        Write-Host "Git Branch       : $((Get-GitQuickStatus -ErrorAction SilentlyContinue ).Branch)"
         Write-Host "GitHub    Version: Todo"
         Write-Host
     }

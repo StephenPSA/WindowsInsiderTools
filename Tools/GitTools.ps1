@@ -1,7 +1,7 @@
 ﻿##=================================================================================================
 # File    : GitTools.ps1
 # Author  : StephenPSA
-# Version : 0.0.6.33
+# Version : 0.0.6.34
 # Date    : Oct, 2016
 #
 # Defines Funcions connected to Git use
@@ -122,7 +122,7 @@ Function Get-GitQuickStatus() {
 
     # Build out
     $hsh =[ordered]@{
-       'Branche'  = $brn
+       'Branch'   = $brn
        'Status'   = $status
        'Added'    = $add
        'Modified' = $upd
