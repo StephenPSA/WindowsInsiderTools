@@ -1,13 +1,13 @@
 # Under construction, use at own risk
 
-# WindowsInsiderTools - BETA 0.0.6.33, Nov 2016
+# WindowsInsiderTools - BETA 0.0.6.34, Nov 2016
 
 + Handy PowerShell Module for Windows Insider members
 
-# HOT
+## HOT
 
-+ New-GitBranche (ngb) [-NewRevision]
-+ Example: PS >ngb -NewRevision
+* New-GitBranche (ngb) [-NewRevision]
+* Example: PS >ngb -NewRevision
 
 + New-GitCommit (ngc) [-Commend] <comment>
 + Example: PS >ngc 'README.md Updates'
