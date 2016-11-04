@@ -216,9 +216,9 @@
                                 <ScriptBlock>
                                     $txt = $_.Source.Replace( "Microsoft-Windows-WindowsUpdateClient", "  --UPDATER--" )
                                     $txt = $txt.Replace( "Microsoft", "MS" )
-                                    $txt = $txt.Replace( "Windows", "WS" )
-                                    if( $txt.Length -le 15 ) { $txt } 
-                                    else                     { $txt.SubString( 0, 12 ) + "..." }
+                                    $txt = $txt.Replace( "Windows", "Win" )
+                                    if( $txt.Length -le 20 ) { $txt } 
+                                    else                     { $txt.SubString( 0, 17 ) + "..." }
                                 </ScriptBlock>
                             </TableColumnItem>
                             <TableColumnItem>
