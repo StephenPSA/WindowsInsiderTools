@@ -172,7 +172,7 @@
                         <Label>Machine</Label>
                         <Width>12</Width>
                     </TableColumnHeader>
-                    <!-- -->
+                    <!-- ID, to br Index -->
                     <TableColumnHeader>
                         <Label>ID</Label>
                         <Alignment>Right</Alignment>
@@ -182,7 +182,12 @@
                         <Label>Source</Label>
                         <Width>20</Width>
                     </TableColumnHeader>
-                    <!-- -->
+                    <!-- ID -->
+                    <TableColumnHeader>
+                        <Label>ID</Label>
+                        <Alignment>Right</Alignment>
+                    </TableColumnHeader>
+                    <!-- Message -->
                     <TableColumnHeader>
                         <Label>Message</Label>
                     </TableColumnHeader>
@@ -210,7 +215,7 @@
                                 <PropertyName>MachineName</PropertyName>
                             </TableColumnItem>
                             <TableColumnItem>
-                                <PropertyName>EventId</PropertyName>
+                                <PropertyName>LogIndex</PropertyName>
                             </TableColumnItem>
                             <TableColumnItem>
                                 <ScriptBlock>
@@ -220,6 +225,9 @@
                                     if( $txt.Length -le 20 ) { $txt } 
                                     else                     { $txt.SubString( 0, 17 ) + "..." }
                                 </ScriptBlock>
+                            </TableColumnItem>
+                            <TableColumnItem>
+                                <PropertyName>EventId</PropertyName>
                             </TableColumnItem>
                             <TableColumnItem>
                                 <PropertyName>Message</PropertyName>
