@@ -141,27 +141,64 @@ Function Get-GitQuickStatus() {
    Short description
 #>
 Function New-GitBranch {
-    [CmdletBinding( SupportsShouldProcess=$true )]
+    [CmdletBinding( SupportsShouldProcess=$true, ConfirmImpact='High' )]
     [Alias( 'ngb' )]
     [OutputType([object])]
     Param(
+        # A name for the new Branch
+        [Parameter( Mandatory=$false, Position=0 )]
+        [string]$Name = 'auto',
+
         # If set, names the new branch
-        [Parameter( Mandatory=$true,
-                    ValueFromPipelineByPropertyName=$true,
-                    Position=0)]
+        [Parameter( ParameterSetName='List' )]
+        [Switch]$List,
+
+        # If set, names the new branch
+        [Parameter()]
         [Switch]$NewRevision
 
         # Force 
     )
 
     Begin {
-        # vars
-        if( $NewRevision ) {
-            Write-Verbose "Aaarrgh! You got me, i.e. Todo:"
+        # var
+        #$gs = Get-GitQuickStatus
+        #if( $gs.Branch -ne 'master' ) {
+        #    Write-Error "You must be on master to do this..."
+        #    $Name = $null
+        #    return
+        #}
+
+        # Get the current
+        $v = Get-WorkspaceVersion -Imported
+        $mj = $v.Major
+        $mn = $v.Minor
+        $bd = $v.Build
+        $rv = $v.Revision
+
+        #
+        if( $NewRevision ) { $rv++ }
+
+        # Auto name
+        if( $Name -eq 'auto' ) {
+            $Name = "V-$mj-$mn-$bd-$rv"
         }
+
     }
 
     Process {
+
+        # Should Process
+        if( $Name -ne $null) { return }
+
+        # Named
+        if( $PSCmdlet.ShouldProcess( $Name, 'Create a new Git Branch' ) ) {
+            Write-Verbose "Creating a new Branch: $Name..."
+            Write-Verbose "Checkout Branch: $Name..."
+            Write-Verbose "Update Versioning $v -> $mj.$mn.$bd.$rv..."
+        }
+
+        #
     }
 
     End {
