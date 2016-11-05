@@ -8,13 +8,17 @@
 #
 ##-------------------------------------------------------------------------------------------------
 #requires -Version 5.0
+#using namespace System.IO
 
 # Global Variables - Todo: Consolodate this into a WitPreferences Class
 $Global:WitModulePath = "$HOME\Documents\WindowsPowerShell\Modules\WindowsInsiderTools"
-$Global:WitGitHub = "$HOME\Documents\GitHub\WindowsInsiderTools"
-$Global:WitCanary = "S:\PSA_Sync\WindowsPowerShell\Modules\WindowsInsiderTools"
+$Global:WitGitHub     = "$HOME\Documents\GitHub\WindowsInsiderTools"
+$Global:WitCanary     = "S:\PSA_Sync\WindowsPowerShell\Modules\WindowsInsiderTools"
 
-# Git
+# Global Workspace
+$Global:WitWorkspaceTabExtensions = '.md', '.psd1', '.psm1', '.ps1', '.txt'
+
+# Global Git
 $Global:WitGitHub   = 'https://github.com/StephenPSA/WindowsInsiderTools'
 $Global:WitGitSheet = 'https://services.github.com/kit/downloads/github-git-cheat-sheet.pdf'
 $Global:WitGitFlow  = 'https://guides.github.com/introduction/flow'
@@ -159,7 +163,7 @@ Function Open-Workspace {
     Process {
         # Select Param set
         # -- Generic
-        if( $PSCmdlet.ParameterSetName -eq 'Path' ) {
+        if( $PSCmdlet.ParameterSetName -eq 'ByPath' ) {
             # Walk Path(s)
             foreach( $pth in $Path ) {
                 # Location or Browser
@@ -171,13 +175,17 @@ Function Open-Workspace {
                     $w = Get-Item $pth
 
                     # Folder
-                    if( $w -is [Windows.Storage.StorageFolder] ) {
+                    if( $w -is [System.IO.DirectoryInfo] ) {
                         Set-Location $pth
                     }
 
                     # File
-                    if( $pth.EndsWith( ".ps1" ) ) {
-                        Write-Host "Todo...deloo...."
+                    if( $w -is [System.IO.FileInfo] ) {
+                        Write-Host $w.Extension
+                        if( $w.Extension -in ($Global:WitWorkspaceTabExtensions) ) {
+                            Write-Host "New Tab: $w"
+                            ise $pth
+                        }
                     }
 
                 }
@@ -194,8 +202,8 @@ Function Open-Workspace {
             foreach( $f in $fs ) {
                 # vars
                 $p = ".\$f"
-                Write-Host $p
-                # Open
+                # Tell and Open
+                Write-Host "New Tab: $p"
                 ise $p
             }
             # Done
@@ -205,15 +213,6 @@ Function Open-Workspace {
         if( $PSCmdlet.ParameterSetName -eq 'InWork' ) {
             # Get the Added, Modified or Deleted Files
             Write-Verbose "Querying Git..."
-            $gqs = Get-GitQuickStatus
-            $fs = $gqs.Modified
-            foreach( $f in $fs ) {
-                # vars
-                $p = ".\$f"
-                Write-Host $p
-                # Open
-                ise $p
-            }
             # Done
         }
 
@@ -227,8 +226,8 @@ Function Open-Workspace {
                     'Documents'           { Set-Location "$HOME\Documents" }
                     'Projects'            { Set-Location "$HOME\Documents\Visual Studio 15\Projects" }
                     'PsModules'           { Set-Location "$HOME\Documents\WindowsPowerShell\Modules" }
-                    # Git
-                    'GitBranch'           { git checkout $Topic }
+                    # Git - Todo, use Get-Branch to show Commits, etc. info
+                    'Branch'              { git checkout $Topic }
                     # Usefull Locations     
                     'Canary'              { Write-Host "Todo: " }
                     'Imported'            { Write-Host "Todo: " }
@@ -250,6 +249,8 @@ Function Open-Workspace {
                 }
             }
         }
+   
+        # EOP
     }
 
     End {
