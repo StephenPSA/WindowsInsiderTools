@@ -1,12 +1,12 @@
-﻿##=================================================================================================
-# File    : WorkspaceTools.ps1
+﻿# File    : WorkspaceTools.ps1
+<#=================================================================================================
 # Author  : StephenPSA
-# Version : 0.0.6.32
+# Version : 0.0.6.35
 # Date    : Nov, 2016
 #
 # Defines Funcions for WindowsInsiderTools contributers
 #
-##-------------------------------------------------------------------------------------------------
+##-------------------------------------------------------------------------------------------------#>
 #requires -Version 5.0
 #using namespace System.IO
 
@@ -18,10 +18,10 @@ $Global:WitCanary     = "S:\PSA_Sync\WindowsPowerShell\Modules\WindowsInsiderToo
 # Global Workspace
 $Global:WitWorkspaceTabExtensions = '.md', '.psd1', '.psm1', '.ps1', '.txt'
 
-# Global Git
-$Global:WitGitHub   = 'https://github.com/StephenPSA/WindowsInsiderTools'
-$Global:WitGitSheet = 'https://services.github.com/kit/downloads/github-git-cheat-sheet.pdf'
-$Global:WitGitFlow  = 'https://guides.github.com/introduction/flow'
+## Global Git
+#$Global:WitGitHub   = 'https://github.com/StephenPSA/WindowsInsiderTools'
+#$Global:WitGitSheet = 'https://services.github.com/kit/downloads/github-git-cheat-sheet.pdf'
+#$Global:WitGitFlow  = 'https://guides.github.com/introduction/flow'
 
 <#
 .Synopsis
@@ -133,6 +133,14 @@ Function Open-Workspace {
         [Alias( 'p' )]
         [string[]]$Path,
 
+        # Opens ISE Tabs for files known to be Added, Modified or Removed (Todo)
+        [Parameter( ParameterSetName='Branch', Mandatory=$true )]
+        [Switch]$Branch,
+
+        # The Path to Goto or Open in Explorer
+        [Parameter( ParameterSetName='Branch', Mandatory=$true, Position=1 )]
+        [string]$Name,
+
         # The Workspace to Goto or Open in Explorer
         [Parameter( ParameterSetName='Workspace', Mandatory=$false, Position=0 )]
         [Alias( 'w' )]
@@ -142,10 +150,31 @@ Function Open-Workspace {
         [Parameter( ParameterSetName='Workspace', Mandatory=$false, Position=1 )]
         [string]$Topic = '',
 
-        # Opens ISE Tabs for files known to be Added, Modified or Removed, but not yet Committed
-        [Parameter( ParameterSetName='Uncommitted', Mandatory=$true )]
-        [Alias( 'u' )]
-        [Switch]$Uncommitted,
+        # Opens ISE-Tabs for files known to be changed, but not yet Staged
+        [Parameter( ParameterSetName='UnStaged', Mandatory=$true, Position=0 )]
+        [Alias( 'us' )]
+        [Switch]$UnStaged,
+
+        # Opens ISE-Tabs for files known to be changed, Staged but not yet Committed
+        [Parameter( ParameterSetName='UnCommitted', Mandatory=$true )]
+        [Alias( 'uc' )]
+        [Switch]$UnCommitted,
+
+        # Opens ISE-Tabs for files known to be changed, Committed but not yet Pushed
+        [Parameter( ParameterSetName='UnPushed', Mandatory=$true )]
+        [Switch]$UnPushed,
+
+        # Opens ISE-Tabs for files known to be changed, Pushed but not yet Published
+        [Parameter( ParameterSetName='UnPublished', Mandatory=$true )]
+        [Switch]$UnPublished,
+
+        [Parameter( ParameterSetName='UnCommitted', Mandatory=$false, Position=1 )]
+        [Parameter( ParameterSetName='UnStaged', Mandatory=$false, Position=1 )]
+        [Switch]$Collapsed,
+
+        # Opens ISE-Tabs for files known to be changed, Pushed but not yet Published
+        [Parameter( ParameterSetName='NewISE', Mandatory=$true )]
+        [Switch]$NewISE,
 
         # Opens ISE Tabs for files known to be Added, Modified or Removed (Todo)
         [Parameter( ParameterSetName='InWork', Mandatory=$true )]
@@ -183,8 +212,10 @@ Function Open-Workspace {
                     if( $w -is [System.IO.FileInfo] ) {
                         Write-Host $w.Extension
                         if( $w.Extension -in ($Global:WitWorkspaceTabExtensions) ) {
-                            Write-Host "New Tab: $w"
-                            ise $pth
+                            # Tell and Open
+                            Write-Host "New Tab: '$w'"
+                            $res = $psISE.CurrentPowerShellTab.Files.Add( $w.FullName )
+                            # Todo: Adorn the Tab
                         }
                     }
 
@@ -193,19 +224,71 @@ Function Open-Workspace {
             # Done
         }
         
-        # -- Shortcut - Uncommitted
-        if( $PSCmdlet.ParameterSetName -eq 'Uncommitted' ) {
+        # -- Shortcut - UnStaged
+        if( $PSCmdlet.ParameterSetName -eq 'UnStaged' ) {
+            # Get the Added, Modified or Deleted Files
+            Write-Verbose "Querying Git for UnStaged work..."
+            $gr = git status --short
+            foreach( $f in $gr ) {
+                # Filter UnStaged
+                if( $f[0] -eq ' ') { continue }
+
+                # vars
+                $p = ".\$($f.SubString( 3 ))"
+
+                ###$l = $null
+                ###
+                #### Filter Unstaged
+                ###switch( $f[0] ) {
+                ###    'A' { $l = "[NEW]" }
+                ###    'M' { $l = "[Mod]" }
+                ###    'R' { $l = "[DEL]" }
+                ###    default {}
+                ###}
+                ###
+                #### Check any work
+                ###if( $l -eq $null) { continue }
+
+                # Tell and Open
+                Write-Host "New Tab [$($f.SubString( 0, 3))] $p"
+                $res = $psISE.CurrentPowerShellTab.Files.Add( "$(Get-Location)$p" )
+                # Todo: Adorn the Tab
+                if( $res -ne $null) {
+                    # PowerShell ISE
+                    $psISE.CurrentPowerShellTab.DisplayName = "[$($f.SubString( 0, 3))] $p"
+                    # Option
+                    if( $Collapsed ) { $res.Editor.ToggleOutliningExpansion() }
+                    # Option
+                    #$res.Editor.EnsureVisible( 251 )
+                }
+            }
+            # Done
+        }
+
+        # -- Shortcut - UnCommitted
+        if( $PSCmdlet.ParameterSetName -eq 'UnCommitted' ) {
             # Get the Added, Modified or Deleted Files
             Write-Verbose "Querying Git for Uncommited work..."
-            $gqs = Get-GitQuickStatus
-            $fs = $gqs.Modified
-            foreach( $f in $fs ) {
+            $gr = git status --short
+            foreach( $f in $gr ) {
+                # Filter Unstaged
+                if( $f[0] -ne ' ' ) { continue }
                 # vars
-                $p = ".\$f"
+                $p = ".\$($f.SubString( 3 ))"
                 # Tell and Open
-                Write-Host "New Tab: $p"
-                ise $p
+                Write-Host "New Tab [$f[0]] : '$p'"
+                $res = $psISE.CurrentPowerShellTab.Files.Add( "$(Get-Location)$p" )
+                # Todo: Adorn the Tab
             }
+            #$gqs = Get-GitQuickStatus
+            #$fs = $gqs.Modified
+            #foreach( $f in $fs ) {
+            #    # vars
+            #    $p = ".\$f"
+            #    # Tell and Open
+            #    Write-Host "New Tab: $p"
+            #    ise $p
+            #}
             # Done
         }
 
@@ -254,6 +337,8 @@ Function Open-Workspace {
     }
 
     End {
+        # Write Pipeline
+        if( $res -ne $null) { Write-Output $res }
     }
 }
 

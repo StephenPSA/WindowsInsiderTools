@@ -1,5 +1,5 @@
-﻿##=================================================================================================
-# File    : GitTools.ps1
+﻿# File    : GitTools.ps1
+<#=================================================================================================
 # Author  : StephenPSA
 # Version : 0.0.6.35
 # Date    : Oct, 2016
@@ -10,16 +10,13 @@
 #    Git Cheat Sheet                 - https://services.github.com/kit/downloads/github-git-cheat-sheet.pdf
 #    Git install                     - https://git-scm.com/downloads
 #    Git in PowerShell (ISE) module  - https://github.com/dahlbyk/posh-git
-##-------------------------------------------------------------------------------------------------
+##-------------------------------------------------------------------------------------------------#>
 #requires -Version 5.0
 
 # Global Variables - Todo: Consolodate this into a WitPreferences Class
-# Webpage
-$Global:WitGitSheet = 'https://services.github.com/kit/downloads/github-git-cheat-sheet.pdf'
-# Webpage
-$Global:WitGitFlow  = 'https://guides.github.com/introduction/flow'
-# Webpage - appended with current Branch
 $Global:WitGitHub   = 'https://github.com/StephenPSA/WindowsInsiderTools'
+$Global:WitGitSheet = 'https://services.github.com/kit/downloads/github-git-cheat-sheet.pdf'
+$Global:WitGitFlow  = 'https://guides.github.com/introduction/flow'
 
 <#
 .Synopsis
@@ -87,6 +84,8 @@ Function Get-GitQuickStatus() {
 
     # Query git
     $gs = git status
+    $summ = git status --short
+
     ### Verbose
     if( $PSBoundParameters.Verbose ) {
         Write-Verbose 'Gotcha!'
@@ -124,6 +123,7 @@ Function Get-GitQuickStatus() {
     $hsh =[ordered]@{
        'Branch'   = $brn
        'Status'   = $status
+       'Changes'  = $summ
        'Added'    = $add
        'Modified' = $upd
        'Removed'  = $rem
