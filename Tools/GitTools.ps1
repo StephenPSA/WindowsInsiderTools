@@ -86,7 +86,7 @@ Function Show-GitFilePrompt( [string]$gitShortStatus ) {
 .Synopsis
    Tests whether a .git Repository is available
 #>
-Function Test-InGitRepository { return ((Get-GitRepository) -ne $null) }
+Function Test-InGitRepository { return ((Get-GitRepository -WarningAction SilentlyContinue) -ne $null) }
 
 <#
 .Synopsis
