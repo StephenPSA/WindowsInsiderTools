@@ -1,5 +1,5 @@
 ﻿##=================================================================================================
-# File    : ContributerTools.ps1
+# File    : WorkspaceTools.ps1
 # Author  : StephenPSA
 # Version : 0.0.6.32
 # Date    : Nov, 2016
@@ -10,9 +10,101 @@
 #requires -Version 5.0
 
 # Global Variables - Todo: Consolodate this into a WitPreferences Class
+$Global:WitModulePath = "$HOME\Documents\WindowsPowerShell\Modules\WindowsInsiderTools"
+$Global:WitGitHub = "$HOME\Documents\GitHub\WindowsInsiderTools"
+$Global:WitCanary = "S:\PSA_Sync\WindowsPowerShell\Modules\WindowsInsiderTools"
+
+# Git
+$Global:WitGitHub   = 'https://github.com/StephenPSA/WindowsInsiderTools'
 $Global:WitGitSheet = 'https://services.github.com/kit/downloads/github-git-cheat-sheet.pdf'
 $Global:WitGitFlow  = 'https://guides.github.com/introduction/flow'
-$Global:WitGitHub   = 'https://github.com/StephenPSA/WindowsInsiderTools'
+
+<#
+.Synopsis
+    Returns Versioning info of one or more Workspaces
+ #>
+Function Get-WorkspaceVersion() {
+    [CmdletBinding( DefaultParameterSetName='Imported' )]
+    [Alias( 'gwv' )]
+    Param(
+        # Get the Workspace Version
+        [Parameter( ParameterSetName='Workspace', Mandatory=$true, Position=0 )]
+        [Switch]$Workspace,
+
+        # Get the Imported Version
+        [Parameter( ParameterSetName='Imported', Mandatory=$false, Position=0 )]
+        [Switch]$Imported,
+
+        # Get the GitHub (local) Version
+        [Parameter( ParameterSetName='GitHub', Mandatory=$true, Position=0 )]
+        [Switch]$GitHub,
+
+        # Get the Canary Version
+        [Parameter( ParameterSetName='Canary', Mandatory=$true, Position=0 )]
+        [Switch]$Canary,
+
+        # Get the Version at
+        [Parameter( ParameterSetName='Path', Mandatory=$false )]
+        [string]$Path = "."
+
+    )
+
+    Begin { }
+
+    Process {
+        # Go
+        try {
+            # Module by ParameterSet
+            switch ( $PSCmdlet.ParameterSetName ) {
+                'Imported'     { $m = Get-Module -Name 'WindowsInsiderTools' }
+                'Workspace'    { $m = Test-ModuleManifest "$Global:WitModulePath\WindowsInsiderTools.psd1" }
+                'GitHub'       { $m = Test-ModuleManifest "$Global:WitGitHub\WindowsInsiderTools.psd1" }
+                'Canary'       { $m = Test-ModuleManifest "$Global:WitCanary\WindowsInsiderTools.psd1" }
+                'Path'         { Write-Error "Oops: Todo as I can expect anything here" }
+            }
+                            
+            # $m = Test-ModuleManifest $pth -ErrorAction SilentlyContinue
+            return $m.Version
+        }
+        catch {
+            return $null
+        }    
+    }
+
+    End {}
+}
+
+<#
+.Synopsis
+    For WindowsInsiderTools Developers only
+#>
+Function Show-Workspace {
+    [CmdletBinding()]
+    [Alias( 'sws' )]
+    Param()
+
+    Begin {
+    }
+
+    Process {
+        # Cue User
+        # Tobe user defined by Path parameter 
+        Write-Host
+        Write-Host "Workspace version: Todo Version state colors"
+        Write-Host "--------------------------------------------"
+        Write-Host "Workspace Version: $(Get-WorkspaceVersion -Workspace)"
+        Write-Host "Imported  Version: $(Get-WorkspaceVersion -Imported)"
+        #Write-Host "Canary    Version: $(Get-WitModuleVersion -Canary)"
+        Write-Host "Git Branch     : $((Get-GitQuickStatus -ErrorAction SilentlyContinue ).Branch)"
+        Write-Host "Git Last Commit: Todo"
+        Write-Host "GitHub    Version: Todo"
+        Write-Host
+    }
+
+    End {
+    } 
+
+}
 
 <#
 .Synopsis

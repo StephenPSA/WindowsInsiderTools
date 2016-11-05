@@ -476,6 +476,7 @@ Class OsStateClass {
 . $HOME\Documents\WindowsPowerShell\Modules\WindowsInsiderTools\Tools\RegistryTools.ps1
 . $HOME\Documents\WindowsPowerShell\Modules\WindowsInsiderTools\Tools\RemotingTools.ps1
 . $HOME\Documents\WindowsPowerShell\Modules\WindowsInsiderTools\Tools\UpdatingTools.ps1
+. $HOME\Documents\WindowsPowerShell\Modules\WindowsInsiderTools\Tools\WorkspaceTools.ps1
 . $HOME\Documents\WindowsPowerShell\Modules\WindowsInsiderTools\Tools\ContributerTools.ps1
 
 ##$ps = { Machine, Description, InstallDate, Build }
