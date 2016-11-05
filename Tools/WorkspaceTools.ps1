@@ -97,27 +97,36 @@ Function Show-Workspace {
         Write-Host "--------------------------------------------"
         Write-Host "Workspace Version: $(Get-WorkspaceVersion -Workspace)"
         Write-Host "Imported  Version: $(Get-WorkspaceVersion -Imported)"
-        #Write-Host "Canary    Version: $(Get-WitModuleVersion -Canary)"
-        Write-Host "Git Branch     : $((Get-GitQuickStatus -ErrorAction SilentlyContinue ).Branch)"
-        Write-Host "Git Last Commit: Todo"
-        Write-Host "GitHub    Version: Todo"
+        if( Test-InGitRepository ) {
+            Write-Host "Git Branch       : " -NoNewline
+            Write-Host                     "$((Get-GitQuickStatus -ErrorAction SilentlyContinue ).Branch)" -ForegroundColor Cyan
+            Write-Host "Git Last Commit  : " -NoNewline
+            Write-Host                     "Todo" -ForegroundColor Cyan
+            Write-Host "GitHub    Version: " -NoNewline
+            Write-Host                     "Todo" -ForegroundColor Cyan
+        }
         Write-Host
 
-        ### Verbose
-        if( !$Short ) {
+        # Git Report and Picker
+        if( !$Short -and (Test-InGitRepository) ) {
             $gss = git status --short
-            foreach( $fs in $gss ) {
-                Write-Host '[' -NoNewline -ForegroundColor Yellow
-                Write-Host $fs[0] -NoNewline -ForegroundColor Green
-                Write-Host $fs[1] -NoNewline -ForegroundColor Red
-                Write-Host $fs[2] -NoNewline -ForegroundColor Magenta
-                Write-Host '] ' -NoNewline -ForegroundColor Yellow
-                Write-Host $fs.SubString( 3 )
+            $i = 1
+
+            foreach( $fs in $gss ) { 
+                Write-Host "$(($i++).ToString( "00" )) | " -NoNewline
+                $foo = Show-GitFilePrompt $fs
+                #Write-Host '[' -NoNewline -ForegroundColor Yellow
+                #Write-Host $fs[0] -NoNewline -ForegroundColor Green
+                #Write-Host $fs[1] -NoNewline -ForegroundColor Red
+                #Write-Host $fs[2] -NoNewline -ForegroundColor Magenta
+                #Write-Host '] ' -NoNewline -ForegroundColor Yellow
+                #Write-Host $fs.SubString( 3 )
             }
+
             Write-Host
-            Write-Host 'Green'            -NoNewLine -ForegroundColor Green
+            Write-Host 'Green'            -NoNewLine -ForegroundColor DarkGreen
             Write-Host ' is Committed, '  -NoNewLine 
-            Write-Host 'Red'              -NoNewLine -ForegroundColor Red
+            Write-Host 'Red'              -NoNewLine -ForegroundColor DarkRed
             Write-Host ' is not Staged, ' -NoNewLine 
             Write-Host 'Magenta'          -NoNewLine -ForegroundColor Magenta
             Write-Host ' is Stashed'
@@ -202,13 +211,7 @@ Function Open-Workspace {
         [Switch]$InWork
     )
 
-    Begin {
-        ## Go
-        #switch( $PSCmdlet.ParameterSetName ) {
-        #    '
-        #    default { Set-Location $Path }
-        #}
-    }
+    Begin {}
 
     Process {
         # Select Param set
@@ -346,10 +349,9 @@ Function Open-Workspace {
         # EOP
     }
 
-    End {
-        # Write Pipeline
-        if( $res -ne $null) { Write-Output $res }
-    }
+    # Write Pipeline
+    End { if( $res -ne $null) { Write-Output $res } }
+
 }
 
 # EOS

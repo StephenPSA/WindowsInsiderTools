@@ -65,6 +65,60 @@ Function Show-GitQuickStart() {
 
 <#
 .Synopsis
+    Shows Wit Integration Status and help
+#>
+Function Show-GitFilePrompt( [string]$gitShortStatus ) {
+    # Host Out
+    Write-Host '[' -NoNewline -ForegroundColor Yellow
+    Write-Host $gitShortStatus[0] -NoNewline -ForegroundColor Green
+    Write-Host $gitShortStatus[1] -NoNewline -ForegroundColor Red
+    Write-Host $gitShortStatus[2] -NoNewline -ForegroundColor Magenta
+    Write-Host '] ' -NoNewline -ForegroundColor Yellow
+    Write-Host './' -NoNewline
+    Write-Host $gitShortStatus.SubString( 3 )
+
+    # Return Label
+    Write-Output "[$($gitShortStatus.Substring( 0, 3))] ./$($gitShortStatus.SubString( 3 ))"
+}
+
+
+<#
+.Synopsis
+   Tests whether a .git Repository is available
+#>
+Function Test-InGitRepository { return ((Get-GitRepository) -ne $null) }
+
+<#
+.Synopsis
+   Gets the nearest .git folder
+#>
+Function Get-GitRepository {
+    Param ()
+
+    # vars    
+    $pth = (Get-Location).Path
+    
+    # Walk up the Parent tree
+    do {
+        # vars    
+        $fp = "$pth\.git"
+        # Check found
+        if( Test-Path $fp ) {
+            # Folder Found
+            return $fp
+        } 
+
+        # Up Up and Away
+        $pth = $pth.Substring( 0, $pth.LastIndexOf( '\' ) )
+
+    } while ( $pth.Length -gt 3 )
+
+    # Failed
+    Write-Warning "Not in a Git Repository"
+}
+
+<#
+.Synopsis
     Gets Quick Git Status
 #>
 Function Get-GitQuickStatus() {
