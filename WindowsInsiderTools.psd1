@@ -1,7 +1,7 @@
 ##=================================================================================================
 # File    : WindowsInsiderTools.psd1
 # Author  : StephenPSA
-# Version : 0.0.6.33
+# Version : 0.0.6.34
 # Date    : Oct, 2016
 #
 # Module manifest for module 'WindowsInsiderTools'
@@ -23,7 +23,7 @@
 RootModule = 'WindowsInsiderTools.psm1'
 
 # Version number of this module.
-ModuleVersion = '0.0.6.33'
+ModuleVersion = '0.0.6.34'
 
 # Supported PSEditions
 # CompatiblePSEditions = @()
@@ -74,7 +74,7 @@ Description = 'Handy functions for Windows Insider members'
 #TypesToProcess = @()
 
 # Format files (.ps1xml) to be loaded when importing this module
-FormatsToProcess = @( 'Formats\WindowsInsiderToolsTypes.Format.ps1xml' )
+FormatsToProcess = @( 'Formats/WindowsInsiderToolsTypes.Format.ps1xml' )
 
 # Modules to import as nested modules of the module specified in RootModule/ModuleToProcess
 # NestedModules = @()
