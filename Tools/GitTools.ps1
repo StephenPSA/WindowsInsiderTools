@@ -189,7 +189,7 @@ Function New-GitBranch {
     Process {
 
         # Should Process
-        if( $Name -ne $null) { return }
+        if( $Name -eq $null) { return }
 
         # Named
         if( $PSCmdlet.ShouldProcess( $Name, 'Create a new Git Branch' ) ) {
