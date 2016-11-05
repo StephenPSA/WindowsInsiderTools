@@ -239,7 +239,7 @@ Function Open-Workspace {
                     'WitUpdate'           { explorer "https://github.com/StephenPSA/WindowsInsiderTools" }
                     # Usefull Web-Sites     
                     'GitHelp'             { git --help $Topic }
-                    'GitHub'              { explorer "$Global:WitGitHub/tree/$((ggq).Branche)" }
+                    'GitHub'              { explorer "$Global:WitGitHub/tree/$((ggq).Branch)" }
                     'Git'                 { explorer "https://git-scm.com" }
                     'PoshGit'             { explorer "https://github.com/dahlbyk/posh-git" }
                     'GitDesktop'          { explorer "https://desktop.github.com/" }
