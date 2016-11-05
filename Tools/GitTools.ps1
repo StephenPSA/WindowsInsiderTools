@@ -1,7 +1,7 @@
 ﻿##=================================================================================================
 # File    : GitTools.ps1
 # Author  : StephenPSA
-# Version : 0.0.6.34
+# Version : 0.0.6.35
 # Date    : Oct, 2016
 #
 # Defines Funcions connected to Git use
@@ -155,7 +155,15 @@ Function New-GitBranch {
 
         # If set, names the new branch
         [Parameter()]
-        [Switch]$NewRevision
+        [Switch]$NewRevision,
+
+        # If set, does not checkout the new Branch
+        [Parameter()]
+        [Switch]$NoCheckout,
+
+        # If set, does not edit the README.md and *.psd1
+        [Parameter()]
+        [Switch]$NoVersionEdits
 
         # Force 
     )
@@ -191,11 +199,27 @@ Function New-GitBranch {
         # Should Process
         if( $Name -eq $null) { return }
 
+        # var
+        $gs = Get-GitQuickStatus -Verbose:$false
+        #if( $gs.Branch -ne 'master' ) {
+        #    Write-Error "You must be on master to do this..."
+        #    $Name = $null
+        #    return
+        #}
+
         # Named
-        if( $PSCmdlet.ShouldProcess( $Name, 'Create a new Git Branch' ) ) {
+        if( $PSCmdlet.ShouldProcess( $gs.Branch, "Create a new Branch: $Name" ) ) {
             Write-Verbose "Creating a new Branch: $Name..."
-            Write-Verbose "Checkout Branch: $Name..."
-            Write-Verbose "Update Versioning $v -> $mj.$mn.$bd.$rv..."
+
+            # Option
+            if( !$NoCheckout )  {
+                Write-Verbose "Checkout Branch: $Name..."
+            }
+
+            # Option
+            if( !$NoCheckout )  {
+                Write-Verbose "Updating Versioning $v -> $mj.$mn.$bd.$rv..."
+            }
         }
 
         #
@@ -215,7 +239,7 @@ Function New-GitBranch {
 
 #>
 Function New-GitCommit {
-    [CmdletBinding( SupportsShouldProcess=$true )]
+    [CmdletBinding( SupportsShouldProcess=$true, ConfirmImpact='High' )]
     [Alias( 'ngc' )]
     [OutputType([object])]
     Param(
@@ -233,39 +257,44 @@ Function New-GitCommit {
     Begin {
         # vars
         $res = $null
+        $gs = Get-GitQuickStatus
 
-        # Ignore empty
-        if( $Comment.Count -eq 0 ) { return }
-
-        # Requires Git
+        # Contract - Requires Git
         if( !(Test-HasGitCommands) ) {
             Write-Error "Aaarrgh! You got me, i.e. Todo:"
             Write-Warning "Git is nit installed, Type 'xxx' to get more help"
             return
         }
-    }
 
-    Process {
         # Ignore empty
         if( $Comment.Count -eq 0 ) { return }
 
-        # Stage
-        $res = git add *
-        #Invoke-Command { git add * } -ErrorVariable hres
-        # Check Staging Result
-        if( $res -ne $null ) {
-            Write-Warning $res
+        # Build delimeted single line comment
+        $cmmnt = [String]::Join( "; ", $Comment )
+    }
+
+    Process {
+        # Contract
+        if( !(Test-HasGitCommands) ) { return }
+
+        # ShouldProcess - Stage
+        if( $PSCmdlet.ShouldProcess( $gs.Branch, "Stage all changes" ) ) {
+            # Stage
+            $res = git add *
+            # Check Staging Result
+            if( $res -ne $null ) {
+                Write-Warning $res
+            }
         }
 
-        # Commit
-        $cmmnt = [String]::Join( ";", $Comment )
-        # - Hides Error Message
-        $res = git commit -m $cmmnt  2>>$null
-        ### Superfluous # Check Commit Result
-        ### Superfluous if( $res -ne $null ) {
-        ### Superfluous     Write-Verbose $res
-        ### Superfluous }
-
+        # ShouldProcess - Commit
+        # Ignore empty
+        if( $cmmnt.Length -eq 0 ) { return }
+        if( $PSCmdlet.ShouldProcess( $gs.Branch, "Commit changes: $cmmnt" ) ) {
+            # Commit
+            # - Hides Error Message
+            $res = git commit -m $cmmnt # 2>>$null
+        }
 
 
     }
