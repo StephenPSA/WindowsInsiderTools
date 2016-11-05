@@ -1,7 +1,7 @@
 ﻿# File    : WorkspaceTools.ps1
 <#=================================================================================================
 # Author  : StephenPSA
-# Version : 0.0.6.35
+# Version : 0.0.6.35 !
 # Date    : Nov, 2016
 #
 # Defines Funcions for WindowsInsiderTools contributers
@@ -87,8 +87,7 @@ Function Show-Workspace {
     [Alias( 'sws' )]
     Param()
 
-    Begin {
-    }
+    Begin {}
 
     Process {
         # Cue User
@@ -103,10 +102,32 @@ Function Show-Workspace {
         Write-Host "Git Last Commit: Todo"
         Write-Host "GitHub    Version: Todo"
         Write-Host
+
+        ### Verbose
+        if( !$Short ) {
+            $gss = git status --short
+            foreach( $fs in $gss ) {
+                Write-Host '[' -NoNewline -ForegroundColor Yellow
+                Write-Host $fs[0] -NoNewline -ForegroundColor Green
+                Write-Host $fs[1] -NoNewline -ForegroundColor Red
+                Write-Host $fs[2] -NoNewline -ForegroundColor Magenta
+                Write-Host '] ' -NoNewline -ForegroundColor Yellow
+                Write-Host $fs.SubString( 3 )
+            }
+            Write-Host
+            Write-Host 'Green'            -NoNewLine -ForegroundColor Green
+            Write-Host ' is Committed, '  -NoNewLine 
+            Write-Host 'Red'              -NoNewLine -ForegroundColor Red
+            Write-Host ' is not Staged, ' -NoNewLine 
+            Write-Host 'Magenta'          -NoNewLine -ForegroundColor Magenta
+            Write-Host ' is Stashed'
+            Write-Host
+        }
+
+
     }
 
-    End {
-    } 
+    End {} 
 
 }
 
@@ -170,7 +191,7 @@ Function Open-Workspace {
 
         [Parameter( ParameterSetName='UnCommitted', Mandatory=$false, Position=1 )]
         [Parameter( ParameterSetName='UnStaged', Mandatory=$false, Position=1 )]
-        [Switch]$Collapsed,
+        [Switch]$DontCollapse,
 
         # Opens ISE-Tabs for files known to be changed, Pushed but not yet Published
         [Parameter( ParameterSetName='NewISE', Mandatory=$true )]
@@ -230,37 +251,26 @@ Function Open-Workspace {
             Write-Verbose "Querying Git for UnStaged work..."
             $gr = git status --short
             foreach( $f in $gr ) {
-                # Filter UnStaged
-                if( $f[0] -eq ' ') { continue }
+                # Filter but UnStaged
+                if( $f[1] -eq ' ') { continue }
 
                 # vars
                 $p = ".\$($f.SubString( 3 ))"
 
-                ###$l = $null
-                ###
-                #### Filter Unstaged
-                ###switch( $f[0] ) {
-                ###    'A' { $l = "[NEW]" }
-                ###    'M' { $l = "[Mod]" }
-                ###    'R' { $l = "[DEL]" }
-                ###    default {}
-                ###}
-                ###
-                #### Check any work
-                ###if( $l -eq $null) { continue }
-
                 # Tell and Open
                 Write-Host "New Tab [$($f.SubString( 0, 3))] $p"
                 $res = $psISE.CurrentPowerShellTab.Files.Add( "$(Get-Location)$p" )
-                # Todo: Adorn the Tab
+                # Adorn the Tab
                 if( $res -ne $null) {
                     # PowerShell ISE
                     $psISE.CurrentPowerShellTab.DisplayName = "[$($f.SubString( 0, 3))] $p"
                     # Option
-                    if( $Collapsed ) { $res.Editor.ToggleOutliningExpansion() }
+                    if( !$DontCollapse ) { $res.Editor.ToggleOutliningExpansion() }
                     # Option
+                    #$res,Editor.SetCaretPosition( x, y )
                     #$res.Editor.EnsureVisible( 251 )
                 }
+
             }
             # Done
         }

@@ -1,7 +1,7 @@
 ﻿# File    : GitTools.ps1
 <#=================================================================================================
 # Author  : StephenPSA
-# Version : 0.0.6.35
+# Version : 0.0.6.35 !
 # Date    : Oct, 2016
 #
 # Defines Funcions connected to Git use
@@ -86,10 +86,10 @@ Function Get-GitQuickStatus() {
     $gs = git status
     $summ = git status --short
 
-    ### Verbose
-    if( $PSBoundParameters.Verbose ) {
-        Write-Verbose 'Gotcha!'
-    }
+    #### Verbose
+    #if( $PSBoundParameters.Verbose ) {
+    #    Write-Verbose 'Gotcha!'
+    #}
 
     # Filter Levels
     foreach( $m in $gs ) {
@@ -102,7 +102,7 @@ Function Get-GitQuickStatus() {
             $brn = $m.Substring( 10 )
             continue
         }
-        # Extract Changed Files
+        # Todo: Obsolete but still in use Extract Changed Files
         if( $m.StartsWith( "    new file:" ) ) {
             $add += $m.Substring( 14 ).Trim()
         }
