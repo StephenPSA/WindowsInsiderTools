@@ -15,7 +15,7 @@ https://answers.microsoft.com/en-us/insider/forum/insider_wintp-insider_desktop/
 + in work...
 
 # Setup
-### Stand Alone Setup
+### For Xxx-StandAlone scripts: 
 #### How To copy StandAlone Script(s)
 + Double-click the 'Xxx-StandAlone.ps1' script you are interested in to see its contents.
 + *** Always carefully scan the script for safety ***
