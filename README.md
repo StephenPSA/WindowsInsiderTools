@@ -15,7 +15,7 @@ https://answers.microsoft.com/en-us/insider/forum/insider_wintp-insider_desktop/
 + in work...
 
 # Setup
-## Stand Alone Setup
+### Stand Alone Setup
 #### How To copy StandAlone Script(s)
 + Double-click the 'Xxx-StandAlone.ps1' script you are interested in to see its contents.
 + *** Always care scan the script for safety ***
@@ -28,5 +28,5 @@ https://answers.microsoft.com/en-us/insider/forum/insider_wintp-insider_desktop/
 + [Optional] Save the Script
 + Press F5 to load the Cmdlets for use
 
-## WindowsInsiderTools Module Setup
+### WindowsInsiderTools Module Setup
 + in work...
