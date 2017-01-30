@@ -19,6 +19,7 @@ Double-click the Xxx-StandAlone.ps1 script you are interested in and copy its co
 + Paste the Script
 + [Optional] Save the Script
 + Press F5 to load the Cmdlets for use
+
 ## WindowsInsiderTools Module Setup
 + in work...
 
