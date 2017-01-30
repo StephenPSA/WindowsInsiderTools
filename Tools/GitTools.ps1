@@ -1,7 +1,7 @@
-﻿##=================================================================================================
-# File    : GitTools.ps1
+﻿# File    : GitTools.ps1
+<#=================================================================================================
 # Author  : StephenPSA
-# Version : 0.0.6.34
+# Version : 0.0.6.35 !
 # Date    : Oct, 2016
 #
 # Defines Funcions connected to Git use
@@ -10,16 +10,13 @@
 #    Git Cheat Sheet                 - https://services.github.com/kit/downloads/github-git-cheat-sheet.pdf
 #    Git install                     - https://git-scm.com/downloads
 #    Git in PowerShell (ISE) module  - https://github.com/dahlbyk/posh-git
-##-------------------------------------------------------------------------------------------------
+##-------------------------------------------------------------------------------------------------#>
 #requires -Version 5.0
 
 # Global Variables - Todo: Consolodate this into a WitPreferences Class
-# Webpage
-$Global:WitGitSheet = 'https://services.github.com/kit/downloads/github-git-cheat-sheet.pdf'
-# Webpage
-$Global:WitGitFlow  = 'https://guides.github.com/introduction/flow'
-# Webpage - appended with current Branch
 $Global:WitGitHub   = 'https://github.com/StephenPSA/WindowsInsiderTools'
+$Global:WitGitSheet = 'https://services.github.com/kit/downloads/github-git-cheat-sheet.pdf'
+$Global:WitGitFlow  = 'https://guides.github.com/introduction/flow'
 
 <#
 .Synopsis
@@ -68,6 +65,60 @@ Function Show-GitQuickStart() {
 
 <#
 .Synopsis
+    Shows Wit Integration Status and help
+#>
+Function Show-GitFilePrompt( [string]$gitShortStatus ) {
+    # Host Out
+    Write-Host '[' -NoNewline -ForegroundColor Yellow
+    Write-Host $gitShortStatus[0] -NoNewline -ForegroundColor Green
+    Write-Host $gitShortStatus[1] -NoNewline -ForegroundColor Red
+    Write-Host $gitShortStatus[2] -NoNewline -ForegroundColor Magenta
+    Write-Host '] ' -NoNewline -ForegroundColor Yellow
+    Write-Host './' -NoNewline
+    Write-Host $gitShortStatus.SubString( 3 )
+
+    # Return Label
+    Write-Output "[$($gitShortStatus.Substring( 0, 3))] ./$($gitShortStatus.SubString( 3 ))"
+}
+
+
+<#
+.Synopsis
+   Tests whether a .git Repository is available
+#>
+Function Test-InGitRepository { return ((Get-GitRepository -WarningAction SilentlyContinue) -ne $null) }
+
+<#
+.Synopsis
+   Gets the nearest .git folder
+#>
+Function Get-GitRepository {
+    Param ()
+
+    # vars    
+    $pth = (Get-Location).Path
+    
+    # Walk up the Parent tree
+    do {
+        # vars    
+        $fp = "$pth\.git"
+        # Check found
+        if( Test-Path $fp ) {
+            # Folder Found
+            return $fp
+        } 
+
+        # Up Up and Away
+        $pth = $pth.Substring( 0, $pth.LastIndexOf( '\' ) )
+
+    } while ( $pth.Length -gt 3 )
+
+    # Failed
+    Write-Warning "Not in a Git Repository"
+}
+
+<#
+.Synopsis
     Gets Quick Git Status
 #>
 Function Get-GitQuickStatus() {
@@ -87,10 +138,12 @@ Function Get-GitQuickStatus() {
 
     # Query git
     $gs = git status
-    ### Verbose
-    if( $PSBoundParameters.Verbose ) {
-        Write-Verbose 'Gotcha!'
-    }
+    $summ = git status --short
+
+    #### Verbose
+    #if( $PSBoundParameters.Verbose ) {
+    #    Write-Verbose 'Gotcha!'
+    #}
 
     # Filter Levels
     foreach( $m in $gs ) {
@@ -103,7 +156,7 @@ Function Get-GitQuickStatus() {
             $brn = $m.Substring( 10 )
             continue
         }
-        # Extract Changed Files
+        # Todo: Obsolete but still in use Extract Changed Files
         if( $m.StartsWith( "    new file:" ) ) {
             $add += $m.Substring( 14 ).Trim()
         }
@@ -124,6 +177,7 @@ Function Get-GitQuickStatus() {
     $hsh =[ordered]@{
        'Branch'   = $brn
        'Status'   = $status
+       'Changes'  = $summ
        'Added'    = $add
        'Modified' = $upd
        'Removed'  = $rem
@@ -141,27 +195,88 @@ Function Get-GitQuickStatus() {
    Short description
 #>
 Function New-GitBranch {
-    [CmdletBinding( SupportsShouldProcess=$true )]
+    [CmdletBinding( SupportsShouldProcess=$true, ConfirmImpact='High' )]
     [Alias( 'ngb' )]
     [OutputType([object])]
     Param(
+        # A name for the new Branch
+        [Parameter( Mandatory=$false, Position=0 )]
+        [string]$Name = 'auto',
+
         # If set, names the new branch
-        [Parameter( Mandatory=$true,
-                    ValueFromPipelineByPropertyName=$true,
-                    Position=0)]
-        [Switch]$NewRevision
+        [Parameter( ParameterSetName='List' )]
+        [Switch]$List,
+
+        # If set, names the new branch
+        [Parameter()]
+        [Switch]$NewRevision,
+
+        # If set, does not checkout the new Branch
+        [Parameter()]
+        [Switch]$NoCheckout,
+
+        # If set, does not edit the README.md and *.psd1
+        [Parameter()]
+        [Switch]$NoVersionEdits
 
         # Force 
     )
 
     Begin {
-        # vars
-        if( $NewRevision ) {
-            Write-Verbose "Aaarrgh! You got me, i.e. Todo:"
+        # var
+        #$gs = Get-GitQuickStatus
+        #if( $gs.Branch -ne 'master' ) {
+        #    Write-Error "You must be on master to do this..."
+        #    $Name = $null
+        #    return
+        #}
+
+        # Get the current
+        $v = Get-WorkspaceVersion -Imported
+        $mj = $v.Major
+        $mn = $v.Minor
+        $bd = $v.Build
+        $rv = $v.Revision
+
+        #
+        if( $NewRevision ) { $rv++ }
+
+        # Auto name
+        if( $Name -eq 'auto' ) {
+            $Name = "V-$mj-$mn-$bd-$rv"
         }
+
     }
 
     Process {
+
+        # Should Process
+        if( $Name -eq $null) { return }
+
+        # var
+        $gs = Get-GitQuickStatus -Verbose:$false
+        #if( $gs.Branch -ne 'master' ) {
+        #    Write-Error "You must be on master to do this..."
+        #    $Name = $null
+        #    return
+        #}
+
+        # Named
+        if( $PSCmdlet.ShouldProcess( $gs.Branch, "Create a new Branch: $Name" ) ) {
+            Write-Verbose "Creating a new Branch: $Name..."
+
+            # Option
+            if( !$NoCheckout )  {
+                Write-Verbose "Checkout Branch: $Name..."
+            }
+
+            # Option
+            if( !$NoCheckout )  {
+                Write-Verbose "Updating Versioning $v -> $mj.$mn.$bd.$rv..."
+            }
+        }
+
+        #
     }
 
     End {
@@ -178,7 +293,7 @@ Function New-GitBranch {
 
 #>
 Function New-GitCommit {
-    [CmdletBinding( SupportsShouldProcess=$true )]
+    [CmdletBinding( SupportsShouldProcess=$true, ConfirmImpact='High' )]
     [Alias( 'ngc' )]
     [OutputType([object])]
     Param(
@@ -196,39 +311,44 @@ Function New-GitCommit {
     Begin {
         # vars
         $res = $null
+        $gs = Get-GitQuickStatus
 
-        # Ignore empty
-        if( $Comment.Count -eq 0 ) { return }
-
-        # Requires Git
+        # Contract - Requires Git
         if( !(Test-HasGitCommands) ) {
             Write-Error "Aaarrgh! You got me, i.e. Todo:"
             Write-Warning "Git is nit installed, Type 'xxx' to get more help"
             return
         }
-    }
 
-    Process {
         # Ignore empty
         if( $Comment.Count -eq 0 ) { return }
 
-        # Stage
-        $res = git add *
-        #Invoke-Command { git add * } -ErrorVariable hres
-        # Check Staging Result
-        if( $res -ne $null ) {
-            Write-Warning $res
+        # Build delimeted single line comment
+        $cmmnt = [String]::Join( "; ", $Comment )
+    }
+
+    Process {
+        # Contract
+        if( !(Test-HasGitCommands) ) { return }
+
+        # ShouldProcess - Stage
+        if( $PSCmdlet.ShouldProcess( $gs.Branch, "Stage all changes" ) ) {
+            # Stage
+            $res = git add *
+            # Check Staging Result
+            if( $res -ne $null ) {
+                Write-Warning $res
+            }
         }
 
-        # Commit
-        $cmmnt = [String]::Join( ";", $Comment )
-        # - Hides Error Message
-        $res = git commit -m $cmmnt  2>>$null
-        ### Superfluous # Check Commit Result
-        ### Superfluous if( $res -ne $null ) {
-        ### Superfluous     Write-Verbose $res
-        ### Superfluous }
-
+        # ShouldProcess - Commit
+        # Ignore empty
+        if( $cmmnt.Length -eq 0 ) { return }
+        if( $PSCmdlet.ShouldProcess( $gs.Branch, "Commit changes: $cmmnt" ) ) {
+            # Commit
+            # - Hides Error Message
+            $res = git commit -m $cmmnt # 2>>$null
+        }
 
 
     }

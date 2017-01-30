@@ -1,12 +1,12 @@
-﻿##=================================================================================================
-# File    : WorkspaceTools.ps1
+﻿# File    : WorkspaceTools.ps1
+<#=================================================================================================
 # Author  : StephenPSA
-# Version : 0.0.6.32
+# Version : 0.0.6.35 !
 # Date    : Nov, 2016
 #
 # Defines Funcions for WindowsInsiderTools contributers
 #
-##-------------------------------------------------------------------------------------------------
+##-------------------------------------------------------------------------------------------------#>
 #requires -Version 5.0
 #using namespace System.IO
 
@@ -18,10 +18,10 @@ $Global:WitCanary     = "S:\PSA_Sync\WindowsPowerShell\Modules\WindowsInsiderToo
 # Global Workspace
 $Global:WitWorkspaceTabExtensions = '.md', '.psd1', '.psm1', '.ps1', '.txt'
 
-# Global Git
-$Global:WitGitHub   = 'https://github.com/StephenPSA/WindowsInsiderTools'
-$Global:WitGitSheet = 'https://services.github.com/kit/downloads/github-git-cheat-sheet.pdf'
-$Global:WitGitFlow  = 'https://guides.github.com/introduction/flow'
+## Global Git
+#$Global:WitGitHub   = 'https://github.com/StephenPSA/WindowsInsiderTools'
+#$Global:WitGitSheet = 'https://services.github.com/kit/downloads/github-git-cheat-sheet.pdf'
+#$Global:WitGitFlow  = 'https://guides.github.com/introduction/flow'
 
 <#
 .Synopsis
@@ -87,8 +87,7 @@ Function Show-Workspace {
     [Alias( 'sws' )]
     Param()
 
-    Begin {
-    }
+    Begin {}
 
     Process {
         # Cue User
@@ -98,15 +97,46 @@ Function Show-Workspace {
         Write-Host "--------------------------------------------"
         Write-Host "Workspace Version: $(Get-WorkspaceVersion -Workspace)"
         Write-Host "Imported  Version: $(Get-WorkspaceVersion -Imported)"
-        #Write-Host "Canary    Version: $(Get-WitModuleVersion -Canary)"
-        Write-Host "Git Branch     : $((Get-GitQuickStatus -ErrorAction SilentlyContinue ).Branch)"
-        Write-Host "Git Last Commit: Todo"
-        Write-Host "GitHub    Version: Todo"
+        if( Test-InGitRepository ) {
+            Write-Host "Git Branch       : " -NoNewline
+            Write-Host                     "$((Get-GitQuickStatus -ErrorAction SilentlyContinue ).Branch)" -ForegroundColor Cyan
+            Write-Host "Git Last Commit  : " -NoNewline
+            Write-Host                     "Todo" -ForegroundColor Cyan
+            Write-Host "GitHub    Version: " -NoNewline
+            Write-Host                     "Todo" -ForegroundColor Cyan
+        }
         Write-Host
+
+        # Git Report and Picker
+        if( !$Short -and (Test-InGitRepository) ) {
+            $gss = git status --short
+            $i = 1
+
+            foreach( $fs in $gss ) { 
+                Write-Host "$(($i++).ToString( "00" )) | " -NoNewline
+                $foo = Show-GitFilePrompt $fs
+                #Write-Host '[' -NoNewline -ForegroundColor Yellow
+                #Write-Host $fs[0] -NoNewline -ForegroundColor Green
+                #Write-Host $fs[1] -NoNewline -ForegroundColor Red
+                #Write-Host $fs[2] -NoNewline -ForegroundColor Magenta
+                #Write-Host '] ' -NoNewline -ForegroundColor Yellow
+                #Write-Host $fs.SubString( 3 )
+            }
+
+            Write-Host
+            Write-Host 'Green'            -NoNewLine -ForegroundColor DarkGreen
+            Write-Host ' is Committed, '  -NoNewLine 
+            Write-Host 'Red'              -NoNewLine -ForegroundColor DarkRed
+            Write-Host ' is not Staged, ' -NoNewLine 
+            Write-Host 'Magenta'          -NoNewLine -ForegroundColor Magenta
+            Write-Host ' is Stashed'
+            Write-Host
+        }
+
+
     }
 
-    End {
-    } 
+    End {} 
 
 }
 
@@ -133,6 +163,14 @@ Function Open-Workspace {
         [Alias( 'p' )]
         [string[]]$Path,
 
+        # Opens ISE Tabs for files known to be Added, Modified or Removed (Todo)
+        [Parameter( ParameterSetName='Branch', Mandatory=$true )]
+        [Switch]$Branch,
+
+        # The Path to Goto or Open in Explorer
+        [Parameter( ParameterSetName='Branch', Mandatory=$true, Position=1 )]
+        [string]$Name,
+
         # The Workspace to Goto or Open in Explorer
         [Parameter( ParameterSetName='Workspace', Mandatory=$false, Position=0 )]
         [Alias( 'w' )]
@@ -142,23 +180,38 @@ Function Open-Workspace {
         [Parameter( ParameterSetName='Workspace', Mandatory=$false, Position=1 )]
         [string]$Topic = '',
 
-        # Opens ISE Tabs for files known to be Added, Modified or Removed, but not yet Committed
-        [Parameter( ParameterSetName='Uncommitted', Mandatory=$true )]
-        [Alias( 'u' )]
-        [Switch]$Uncommitted,
+        # Opens ISE-Tabs for files known to be changed, but not yet Staged
+        [Parameter( ParameterSetName='UnStaged', Mandatory=$true, Position=0 )]
+        [Alias( 'us' )]
+        [Switch]$UnStaged,
+
+        # Opens ISE-Tabs for files known to be changed, Staged but not yet Committed
+        [Parameter( ParameterSetName='UnCommitted', Mandatory=$true )]
+        [Alias( 'uc' )]
+        [Switch]$UnCommitted,
+
+        # Opens ISE-Tabs for files known to be changed, Committed but not yet Pushed
+        [Parameter( ParameterSetName='UnPushed', Mandatory=$true )]
+        [Switch]$UnPushed,
+
+        # Opens ISE-Tabs for files known to be changed, Pushed but not yet Published
+        [Parameter( ParameterSetName='UnPublished', Mandatory=$true )]
+        [Switch]$UnPublished,
+
+        [Parameter( ParameterSetName='UnCommitted', Mandatory=$false, Position=1 )]
+        [Parameter( ParameterSetName='UnStaged', Mandatory=$false, Position=1 )]
+        [Switch]$DontCollapse,
+
+        # Opens ISE-Tabs for files known to be changed, Pushed but not yet Published
+        [Parameter( ParameterSetName='NewISE', Mandatory=$true )]
+        [Switch]$NewISE,
 
         # Opens ISE Tabs for files known to be Added, Modified or Removed (Todo)
         [Parameter( ParameterSetName='InWork', Mandatory=$true )]
         [Switch]$InWork
     )
 
-    Begin {
-        ## Go
-        #switch( $PSCmdlet.ParameterSetName ) {
-        #    '
-        #    default { Set-Location $Path }
-        #}
-    }
+    Begin {}
 
     Process {
         # Select Param set
@@ -183,8 +236,10 @@ Function Open-Workspace {
                     if( $w -is [System.IO.FileInfo] ) {
                         Write-Host $w.Extension
                         if( $w.Extension -in ($Global:WitWorkspaceTabExtensions) ) {
-                            Write-Host "New Tab: $w"
-                            ise $pth
+                            # Tell and Open
+                            Write-Host "New Tab: '$w'"
+                            $res = $psISE.CurrentPowerShellTab.Files.Add( $w.FullName )
+                            # Todo: Adorn the Tab
                         }
                     }
 
@@ -193,19 +248,60 @@ Function Open-Workspace {
             # Done
         }
         
-        # -- Shortcut - Uncommitted
-        if( $PSCmdlet.ParameterSetName -eq 'Uncommitted' ) {
+        # -- Shortcut - UnStaged
+        if( $PSCmdlet.ParameterSetName -eq 'UnStaged' ) {
+            # Get the Added, Modified or Deleted Files
+            Write-Verbose "Querying Git for UnStaged work..."
+            $gr = git status --short
+            foreach( $f in $gr ) {
+                # Filter but UnStaged
+                if( $f[1] -eq ' ') { continue }
+
+                # vars
+                $p = ".\$($f.SubString( 3 ))"
+
+                # Tell and Open
+                Write-Host "New Tab [$($f.SubString( 0, 3))] $p"
+                $res = $psISE.CurrentPowerShellTab.Files.Add( "$(Get-Location)$p" )
+                # Adorn the Tab
+                if( $res -ne $null) {
+                    # PowerShell ISE
+                    $psISE.CurrentPowerShellTab.DisplayName = "[$($f.SubString( 0, 3))] $p"
+                    # Option
+                    if( !$DontCollapse ) { $res.Editor.ToggleOutliningExpansion() }
+                    # Option
+                    #$res,Editor.SetCaretPosition( x, y )
+                    #$res.Editor.EnsureVisible( 251 )
+                }
+
+            }
+            # Done
+        }
+
+        # -- Shortcut - UnCommitted
+        if( $PSCmdlet.ParameterSetName -eq 'UnCommitted' ) {
             # Get the Added, Modified or Deleted Files
             Write-Verbose "Querying Git for Uncommited work..."
-            $gqs = Get-GitQuickStatus
-            $fs = $gqs.Modified
-            foreach( $f in $fs ) {
+            $gr = git status --short
+            foreach( $f in $gr ) {
+                # Filter Unstaged
+                if( $f[0] -ne ' ' ) { continue }
                 # vars
-                $p = ".\$f"
+                $p = ".\$($f.SubString( 3 ))"
                 # Tell and Open
-                Write-Host "New Tab: $p"
-                ise $p
+                Write-Host "New Tab [$f[0]] : '$p'"
+                $res = $psISE.CurrentPowerShellTab.Files.Add( "$(Get-Location)$p" )
+                # Todo: Adorn the Tab
             }
+            #$gqs = Get-GitQuickStatus
+            #$fs = $gqs.Modified
+            #foreach( $f in $fs ) {
+            #    # vars
+            #    $p = ".\$f"
+            #    # Tell and Open
+            #    Write-Host "New Tab: $p"
+            #    ise $p
+            #}
             # Done
         }
 
@@ -239,7 +335,7 @@ Function Open-Workspace {
                     'WitUpdate'           { explorer "https://github.com/StephenPSA/WindowsInsiderTools" }
                     # Usefull Web-Sites     
                     'GitHelp'             { git --help $Topic }
-                    'GitHub'              { explorer "$Global:WitGitHub/tree/$((ggq).Branche)" }
+                    'GitHub'              { explorer "$Global:WitGitHub/tree/$((ggq).Branch)" }
                     'Git'                 { explorer "https://git-scm.com" }
                     'PoshGit'             { explorer "https://github.com/dahlbyk/posh-git" }
                     'GitDesktop'          { explorer "https://desktop.github.com/" }
@@ -253,8 +349,9 @@ Function Open-Workspace {
         # EOP
     }
 
-    End {
-    }
+    # Write Pipeline
+    End { if( $res -ne $null) { Write-Output $res } }
+
 }
 
 # EOS
