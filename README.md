@@ -13,17 +13,16 @@
 + Copy Script(s)...
 Double-click the Xxx-StandAlone.ps1 script you are interested in and copy its contents.
 
-# Store the Script locally
+## Store the Script locally
 + Open the Powershell ISE
 + Open a new 'Untitled' document
 + Paste the Script
 + [Optional] Save the Script
 + Press F5 to load the Cmdlets for use
-
-# Usage
+## WindowsInsiderTools Module Setup
 + in work...
 
-# WindowsInsiderTools Module Setup
+# Usage
 + in work...
 
 # See Also:
