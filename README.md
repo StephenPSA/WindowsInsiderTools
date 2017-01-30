@@ -9,6 +9,12 @@
 # Summary
 + in work...
 
+# Usage
++ in work...
+
+# See Also:
++ in work...
+
 # Stand Alone Setup
 + Copy Script(s)...
 Double-click the Xxx-StandAlone.ps1 script you are interested in and copy its contents.
@@ -21,10 +27,4 @@ Double-click the Xxx-StandAlone.ps1 script you are interested in and copy its co
 + Press F5 to load the Cmdlets for use
 
 ### WindowsInsiderTools Module Setup
-+ in work...
-
-# Usage
-+ in work...
-
-# See Also:
 + in work...
