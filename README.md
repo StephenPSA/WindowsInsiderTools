@@ -10,13 +10,20 @@
 + in work...
 
 # Stand Alone Setup
-+ After Installing start with:
-...
++ Copy Script(s)...
+Double-click the Xxx-StandAlone.ps1 script you are interested in and copy its contents.
 
-+ This will get you...
-...
+# Store the Script locally
++ Open the Powershell ISE
++ Open a new 'Untitled' document
++ Paste the Script
++ [Optional] Save the Script
++ Press F5 to load the Cmdlets for use
 
-# Windows Insider Tools Module Setup
+# Usage
++ in work...
+
+# WindowsInsiderTools Module Setup
 + in work...
 
 # See Also:
