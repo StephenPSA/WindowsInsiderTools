@@ -14,16 +14,18 @@ https://answers.microsoft.com/en-us/insider/forum/insider_wintp-insider_desktop/
 # See Also:
 + in work...
 
-### Stand Alone Setup, How To copy StandAlone Script(s)
-+ Double-click the Xxx-StandAlone.ps1 script you are interested in and copy its contents.
+# Setup
+## Stand Alone Setup
+### How To copy StandAlone Script(s)
++ Double-click the 'Xxx-StandAlone.ps1' script you are interested in to see (and copy) its contents.
++ *** Always care scan the script for safety ***
 
-### Stand Alone Setup, How to store the Script locally
+### How to store the Script locally
 + Open the Powershell ISE
 + Open a new 'Untitled' document
 + Paste the Script
-+ *** Always care scan the script for safety ***
 + [Optional] Save the Script
 + Press F5 to load the Cmdlets for use
 
-### WindowsInsiderTools Module Setup
+## WindowsInsiderTools Module Setup
 + in work...
