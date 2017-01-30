@@ -16,11 +16,12 @@ https://answers.microsoft.com/en-us/insider/forum/insider_wintp-insider_desktop/
 
 # Setup
 ## Stand Alone Setup
-### How To copy StandAlone Script(s)
-+ Double-click the 'Xxx-StandAlone.ps1' script you are interested in to see (and copy) its contents.
+#### How To copy StandAlone Script(s)
++ Double-click the 'Xxx-StandAlone.ps1' script you are interested in to see its contents.
 + *** Always care scan the script for safety ***
++ Copy its contents
 
-### How to store the Script locally
+#### How to store the Script locally
 + Open the Powershell ISE
 + Open a new 'Untitled' document
 + Paste the Script
