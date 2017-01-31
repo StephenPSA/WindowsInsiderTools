@@ -4,6 +4,9 @@
 # Version : 0.0.0.1
 # Date    : Jan, 2017
 #
+# PLEASE NOTE: CHECK lines 140 to 153, due to BETA some code is DISABLED
+# PLEASE NOTE: Please do not forget to remove this comment when changed
+#
 # A workaround powershell script for Build 10.0.15019.1000
 # - Change 'Advanced Display Setting' 
 ##-------------------------------------------------------------------------------------------------
@@ -136,7 +139,7 @@ Class DesktopMetricsFontClass {
     # Internal
     hidden [void]WriteRegistry() {
         #- BETA DISABLED
-        Write-Host 'Write to Registry is disabled' -ForegroundColor DarkYellow
+        Write-Host 'BETA RESTRICTION Write to Registry is disabled' -ForegroundColor DarkYellow
 
         ##- BETA ENABLED
         ## Write OS Registry
