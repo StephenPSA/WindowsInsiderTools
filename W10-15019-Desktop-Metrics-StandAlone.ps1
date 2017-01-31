@@ -4,7 +4,7 @@
 # Version : 0.0.0.1
 # Date    : Jan, 2017
 #
-# PLEASE NOTE: CHECK lines 140 to 153, due to BETA some code is DISABLED
+# PLEASE NOTE: CHECK lines 145 to 150, due to BETA some code is DISABLED
 # PLEASE NOTE: Please do not forget to remove this comment when changed
 #
 # A workaround powershell script for Build 10.0.15019.1000
@@ -15,19 +15,25 @@
 # [Classes] 
 # [Cmdlets] 
 ##=================================================================================================
-# Also thanks to Willy Denoyette, Windows Insider
+## Also many thanks to 
+#
+# Willy Denoyette, Windows Insider, for...
 #
 #     $key="HKEY_CURRENT_USER\Control Panel\Desktop\WindowMetrics"
 #     $size = 12
 #     $val = (Get-Itemproperty -Path Registry::$Key ).IconFont
 #     $val[0]= 256 - $size
 #     Set-Itemproperty -Path Registry::$Key -Name IconFont -Value $val
+#
+# Slant310, Windows Insider, for voluterring to test...
+#
+# Cal54, Shilohbob, etc, etc, for providing this and that...
 ##-------------------------------------------------------------------------------------------------
 
 #requires -Version 5.0
 
 # Enum - 
-enum DesktopMetricsFont {
+Enum DesktopMetricsFont {
     None
     All
     Caption
@@ -37,19 +43,6 @@ enum DesktopMetricsFont {
     SmCaption
     Status
 }
-
-## Enum - 
-#enum DesktopMetricsCategory {
-#    Raw
-#    Font
-##    AppliedDPI
-##    FontName
-#    FontSize
-##    FontBold
-##    FontUnderline
-##    Width
-##    Height
-#}
 
 # Class - 
 Class DesktopMetricsFontClass {
@@ -136,63 +129,23 @@ Class DesktopMetricsFontClass {
         # Done
     }
 
-    # Internal
+    # Internal - Write OS Registry
     hidden [void]WriteRegistry() {
+        # vars
+        $key = "HKEY_CURRENT_USER\Control Panel\Desktop\WindowMetrics"
+        $nme = $this.Font.ToString() + 'Font'
+
         #- BETA DISABLED
         Write-Host 'BETA RESTRICTION Write to Registry is disabled' -ForegroundColor DarkYellow
 
-        ##- BETA ENABLED
-        ## Write OS Registry
-        ## vars
-        #$key = "HKEY_CURRENT_USER\Control Panel\Desktop\WindowMetrics"
-        #$nme = $this.Font.ToString() + 'Font'
-        #Set-Itemproperty -Path Registry::$Key -Name $nme -Value $this.rawData 
-        #Write-Host 'The Write to Registry was sucessfull' -ForegroundColor Green
+        #- BETA ENABLED
+        #    Set-Itemproperty -Path Registry::$Key -Name $nme -Value $this.rawData 
+        #    Write-Host 'The Write to Registry was sucessfull' -ForegroundColor Green
 
         # Done
     }
 
 }
-
-### Internal Helper Function
-##Function Get-DesktopMetricsFont( [DesktopMetricsFont]$Font ) {
-##    # vars
-##    $res = $null
-##    $key="HKEY_CURRENT_USER\Control Panel\Desktop\WindowMetrics"
-##    # Read Registry
-##    $val = Get-Itemproperty -Path Registry::$Key
-##    # Select Fiel
-##    switch ( $font ) {
- #      Caption { $res = $val.CaptionFont } 
- #      Icon { $res = $val.IconFont } 
- #      Menu { $res = $val.MenuFont } 
- #      Message { $res = $val.MessageFont } 
- #      SmCaption { $res = $val.SmCaptionFont } 
- #      Status { $res = $val.StatusFont } 
- #   }
-##    # Done
-##    return $res
-##}
-
-#<#
-#.Synopsis
-#.DESCRIPTION
-#.EXAMPLE
-##>
-#Function Test-DesktopMetrics() {
-#    [Alias( 'tdm' )]
-#    Param()
-#
-#    # Go
-#    ([DesktopMetricsFontClass]::new( [DesktopMetricsFont]::Caption ))
-#    ([DesktopMetricsFontClass]::new( [DesktopMetricsFont]::SmCaption ))
-#    ([DesktopMetricsFontClass]::new( [DesktopMetricsFont]::Menu ))
-#    ([DesktopMetricsFontClass]::new( [DesktopMetricsFont]::Message ))
-#    ([DesktopMetricsFontClass]::new( [DesktopMetricsFont]::Menu ))
-#    ([DesktopMetricsFontClass]::new( [DesktopMetricsFont]::Status ))
-#    ([DesktopMetricsFontClass]::new( [DesktopMetricsFont]::Icon ))
-#    # Done
-#}
 
 <#
 .Synopsis
