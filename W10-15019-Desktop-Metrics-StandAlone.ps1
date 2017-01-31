@@ -35,18 +35,18 @@ enum DesktopMetricsFont {
     Status
 }
 
-# Enum - 
-enum DesktopMetricsCategory {
-    Raw
-    Font
-#    AppliedDPI
-#    FontName
-    FontSize
-#    FontBold
-#    FontUnderline
-#    Width
-#    Height
-}
+## Enum - 
+#enum DesktopMetricsCategory {
+#    Raw
+#    Font
+##    AppliedDPI
+##    FontName
+#    FontSize
+##    FontBold
+##    FontUnderline
+##    Width
+##    Height
+#}
 
 # Class - 
 Class DesktopMetricsFontClass {
@@ -83,6 +83,9 @@ Class DesktopMetricsFontClass {
     
     # Method
     [void]ApplyChanges() {
+        # Validate FontSize
+        if( $this.Size -lt 6 ) { $this.Size = 6 }
+        if( $this.Size -gt 20 ) { $this.Size = 20 }
         # FontSize
         $this.rawData[0] = (256 - $this.Size)
         #- Write to registry
@@ -93,6 +96,16 @@ Class DesktopMetricsFontClass {
     [void]Revert() {
         # FontSize
         $this.rawData = $this.originalData
+        #- Write to Registry
+        $this.WriteRegistry()
+        #- Read again from Registry
+        $this.ReadRegistry()
+    }
+    
+    # Method
+    [void]RevertToOOTB() {
+        # Default FontSize
+        $this.Size = 12
         #- Write to Registry
         $this.WriteRegistry()
         #- Read again from Registry
@@ -135,6 +148,7 @@ Class DesktopMetricsFontClass {
 
         # Done
     }
+
 }
 
 ### Internal Helper Function
@@ -157,25 +171,25 @@ Class DesktopMetricsFontClass {
 ##    return $res
 ##}
 
-<#
-.Synopsis
-.DESCRIPTION
-.EXAMPLE
-#>
-Function Test-DesktopMetrics() {
-    [Alias( 'tdm' )]
-    Param()
-
-    # Go
-    ([DesktopMetricsFontClass]::new( [DesktopMetricsFont]::Caption ))
-    ([DesktopMetricsFontClass]::new( [DesktopMetricsFont]::SmCaption ))
-    ([DesktopMetricsFontClass]::new( [DesktopMetricsFont]::Menu ))
-    ([DesktopMetricsFontClass]::new( [DesktopMetricsFont]::Message ))
-    ([DesktopMetricsFontClass]::new( [DesktopMetricsFont]::Menu ))
-    ([DesktopMetricsFontClass]::new( [DesktopMetricsFont]::Status ))
-    ([DesktopMetricsFontClass]::new( [DesktopMetricsFont]::Icon ))
-    # Done
-}
+#<#
+#.Synopsis
+#.DESCRIPTION
+#.EXAMPLE
+##>
+#Function Test-DesktopMetrics() {
+#    [Alias( 'tdm' )]
+#    Param()
+#
+#    # Go
+#    ([DesktopMetricsFontClass]::new( [DesktopMetricsFont]::Caption ))
+#    ([DesktopMetricsFontClass]::new( [DesktopMetricsFont]::SmCaption ))
+#    ([DesktopMetricsFontClass]::new( [DesktopMetricsFont]::Menu ))
+#    ([DesktopMetricsFontClass]::new( [DesktopMetricsFont]::Message ))
+#    ([DesktopMetricsFontClass]::new( [DesktopMetricsFont]::Menu ))
+#    ([DesktopMetricsFontClass]::new( [DesktopMetricsFont]::Status ))
+#    ([DesktopMetricsFontClass]::new( [DesktopMetricsFont]::Icon ))
+#    # Done
+#}
 
 <#
 .Synopsis
@@ -185,12 +199,38 @@ Function Test-DesktopMetrics() {
 Function Get-DesktopMetrics() {
     [Alias( 'gdm' )]
     Param(
-        [DesktopMetricsFont]$Font
+        # The Name of the field
+        [Parameter( Mandatory=$false, Position=0 )]
+        [DesktopMetricsFont[]]$Font = [DesktopMetricsFont]::All
     )
 
+    Begin {
+        # Automate 'specials'
+        if( $Font -eq [DesktopMetricsFont]::All ) { 
+            $Font =  [DesktopMetricsFont]::Caption
+            $Font += [DesktopMetricsFont]::SmCaption
+            $Font += [DesktopMetricsFont]::Menu 
+            $Font += [DesktopMetricsFont]::Message
+            $Font += [DesktopMetricsFont]::Status
+            $Font += [DesktopMetricsFont]::Icon
+        }
+    }
+
     # Go
-    Write-Output ([DesktopMetricsFontClass]::new( $Font ))
-    # Done
+    Process {
+        # Go
+        foreach( $f in $Font ) {
+            # Skip 'specials'
+            if( $f -eq [DesktopMetricsFont]::All ) { continue }
+            if( $f -eq [DesktopMetricsFont]::None ) { continue }
+            # Normal
+            $dfnt =[DesktopMetricsFontClass]::new( $f )
+            Write-Output $dfnt
+        }
+        # Done
+    }
+
+    End {}
 }
 
 <#
@@ -202,13 +242,13 @@ Function Get-DesktopMetrics() {
 Function Set-DesktopMetrics() {
     [Alias( 'sdm' )]
     Param(
-        # A name for the new Branch
+        # The Name of the field
         [Parameter( Mandatory=$false, Position=0 )]
         [DesktopMetricsFont[]]$Font = [DesktopMetricsFont]::All,
 
-        # A name for the new Branch
+        # A Font-Size
         [Parameter( Mandatory=$true, Position=1 )]
-        [ValidateSet( 6, 7, 9, 10, 11, 12, 14, 16 )]
+        [ValidateRange( 6, 20 )]
         [int]$FontSize = 12
     )
 
