@@ -1,21 +1,22 @@
 ﻿##=================================================================================================
 # File    : W10-15019-Desktop-Metrics-StandAlone.ps1
 # Author  : StephenPSA
-# Version : 0.0.0.1
-# Date    : Jan, 2017
+# Version : 0.0.0.2
+# Date    : Feb, 2017
 #
-# PLEASE NOTE: CHECK lines 145 to 150, due to BETA some code is DISABLED
+# - Change 'Advanced Display Settings' 
+# - A workaround powershell script for Build 10.0.15019.1000
+#
+# PLEASE NOTE: CHECK lines 138 to 144, due to BETA some code is DISABLED
 # PLEASE NOTE: Please do not forget to remove this comment when changed
 #
-# A workaround powershell script for Build 10.0.15019.1000
-# - Change 'Advanced Display Setting' 
 ##-------------------------------------------------------------------------------------------------
-# Defines Enums, Classes and Functions in lieu of 
-  # [Enums] DesktopMetricsFont, DesktopMetricsCategory
-# [Classes] 
-# [Cmdlets] 
-##=================================================================================================
-## Also many thanks to 
+# Defines Enums, Classes and Functions
+#     [Enums] DesktopMetric
+#   [Classes] DesktopMetricFontClass
+# [Functions] Get-DesktopMetric, Set-DesktopMetric
+##-------------------------------------------------------------------------------------------------
+## Also thanks to 
 #
 # Willy Denoyette, Windows Insider, for...
 #
@@ -29,39 +30,38 @@
 #
 # Cal54, Shilohbob, etc, etc, for providing this and that...
 #
-##-------------------------------------------------------------------------------------------------
-
+##=================================================================================================
 #requires -Version 5.0
 
 # Enum - 
-Enum DesktopMetricsFont {
+Enum DesktopMetric {
     None
     All
-    Caption
-    Icon
-    Menu
-    Message
-    SmCaption
-    Status
+    CaptionFont
+    SmCaptionFont
+    IconFont
+    MenuFont
+    MessageFont
+    StatusFont
 }
 
 # Class - 
-Class DesktopMetricsFontClass {
+Class DesktopMetricFontClass {
 
     # Constructor
-    DesktopMetricsFontClass ( [DesktopMetricsFont]$Font )  {
+    DesktopMetricFontClass ( [DesktopMetric]$Metric )  {
         # Contract
-        if( $Font -eq [DesktopMetricsFont]::All ) {
+        if( $Metric -eq [DesktopMetric]::All ) {
             throw [System.Exception]::new( "'All' is not allowed here" )
         }
-        if( $Font -eq [DesktopMetricsFont]::None ) {
+        if( $Metric -eq [DesktopMetric]::None ) {
             throw [System.Exception]::new( "'None' is not allowed here" )
         }
         # Store params
-        $this.Font = $Font;
+        $this.Metric = $Metric;
         # vars
-        if( $Font -ne [DesktopMetricsFont]::None ) {
-            # Get Raw
+        if( $Metric -ne [DesktopMetric]::None ) {
+            # Get Raw State
             $this.ReadRegistry()
             # Store Original State
             $this.originalData = $this.rawData
@@ -71,7 +71,7 @@ Class DesktopMetricsFontClass {
     }
 
     # Public Fields
-    [DesktopMetricsFont]$Font
+    [DesktopMetric]$Metric
     [int]$Size
 
     # Private Fields
@@ -117,13 +117,13 @@ Class DesktopMetricsFontClass {
         # Read OS Registry
         $val = Get-Itemproperty -Path Registry::$Key
         # Select Field
-        switch ( $this.Font ) {
-           Caption { $res = $val.CaptionFont } 
-           Icon { $res = $val.IconFont } 
-           Menu { $res = $val.MenuFont } 
-           Message { $res = $val.MessageFont } 
-           SmCaption { $res = $val.SmCaptionFont } 
-           Status { $res = $val.StatusFont } 
+        switch ( $this.Metric ) {
+           CaptionFont { $res = $val.CaptionFont } 
+           SmCaptionFont { $res = $val.SmCaptionFont } 
+           IconFont { $res = $val.IconFont } 
+           MenuFont { $res = $val.MenuFont } 
+           MessageFont { $res = $val.MessageFont } 
+           StatusFont { $res = $val.StatusFont } 
         }
         # Store
         $this.rawData = $res
@@ -134,13 +134,12 @@ Class DesktopMetricsFontClass {
     hidden [void]WriteRegistry() {
         # vars
         $key = "HKEY_CURRENT_USER\Control Panel\Desktop\WindowMetrics"
-        $nme = $this.Font.ToString() + 'Font'
 
         #- BETA DISABLED
         Write-Host 'BETA RESTRICTION Write to Registry is disabled' -ForegroundColor DarkYellow
 
         #- BETA ENABLED
-        #    Set-Itemproperty -Path Registry::$Key -Name $nme -Value $this.rawData 
+        #    Set-Itemproperty -Path Registry::$Key -Name $this.Metric -Value $this.rawData 
         #    Write-Host 'The Write to Registry was sucessfull' -ForegroundColor Green
 
         # Done
@@ -149,39 +148,45 @@ Class DesktopMetricsFontClass {
 }
 
 <#
-.Synopsis
+.SYNOPSIS
+    Reports the current Desktop Metric values
 .DESCRIPTION
+    Reports the current Desktop Metric values as stored in the Registry under key:
+    HKEY_CURRENT_USER\Control Panel\Desktop\WindowMetrics
 .EXAMPLE
+    Get-DesktopMetric or gdm
+.EXAMPLE
+    Get-DesktopMetric -Metric Caption, Menu
 #>
-Function Get-DesktopMetrics() {
+Function Get-DesktopMetric() {
     [Alias( 'gdm' )]
     Param(
         # The Name of the field
         [Parameter( Mandatory=$false, Position=0 )]
-        [DesktopMetricsFont[]]$Font = [DesktopMetricsFont]::All
+        [DesktopMetric[]]$Metric = [DesktopMetric]::All
     )
 
     Begin {
         # Automate 'specials'
-        if( $Font -eq [DesktopMetricsFont]::All ) { 
-            $Font =  [DesktopMetricsFont]::Caption
-            $Font += [DesktopMetricsFont]::SmCaption
-            $Font += [DesktopMetricsFont]::Menu 
-            $Font += [DesktopMetricsFont]::Message
-            $Font += [DesktopMetricsFont]::Status
-            $Font += [DesktopMetricsFont]::Icon
+        if( $Metric -eq [DesktopMetric]::All ) { 
+            $Metric =  [DesktopMetric]::CaptionFont
+            $Metric += [DesktopMetric]::SmCaptionFont
+            $Metric += [DesktopMetric]::MenuFont
+            $Metric += [DesktopMetric]::MessageFont
+            $Metric += [DesktopMetric]::StatusFont
+            $Metric += [DesktopMetric]::IconFont
         }
     }
 
     # Go
     Process {
         # Go
-        foreach( $f in $Font ) {
+        foreach( $f in $Metric ) {
             # Skip 'specials'
-            if( $f -eq [DesktopMetricsFont]::All ) { continue }
-            if( $f -eq [DesktopMetricsFont]::None ) { continue }
+            if( $f -eq [DesktopMetric]::All ) { continue }
+            if( $f -eq [DesktopMetric]::None ) { continue }
             # Normal
-            $dfnt =[DesktopMetricsFontClass]::new( $f )
+            $dfnt =[DesktopMetricFontClass]::new( $f )
             Write-Output $dfnt
         }
         # Done
@@ -191,44 +196,53 @@ Function Get-DesktopMetrics() {
 }
 
 <#
-.Synopsis
+.SYNOPSIS
+    WORKAROUND for Builds 15019-?? lacking the ability to change Desktop Font sizes
+
+    Sets one or more of the Desktop Font Size(s)
 .DESCRIPTION
+    WORKAROUND for Builds 15019-?? to sets one or more Desktop Font Size(s)
+
+    Set the Desktop Metric values stored in the Registry under key:
+    HKEY_CURRENT_USER\Control Panel\Desktop\WindowMetrics
 .EXAMPLE
-    sdm -Font Caption, SmCaption -FontSize 14
+    Set-DesktopMetric -Metric Caption, Menu -FontSize 14
+.EXAMPLE
+    sdm Caption, Menu 14
 #>
-Function Set-DesktopMetrics() {
+Function Set-DesktopMetric() {
     [Alias( 'sdm' )]
     Param(
-        # The Name of the field
-        [Parameter( Mandatory=$false, Position=0 )]
-        [DesktopMetricsFont[]]$Font = [DesktopMetricsFont]::All,
+        # The name of the Font Metric to change
+        [Parameter( ParameterSetName='FontSize', Mandatory=$false, Position=0 )]
+        [DesktopMetric[]]$Metric = [DesktopMetric]::All,
 
-        # A Font-Size
-        [Parameter( Mandatory=$true, Position=1 )]
+        # A Font-Size to set
+        [Parameter( ParameterSetName='FontSize', Mandatory=$true, Position=1 )]
         [ValidateRange( 6, 20 )]
         [int]$FontSize = 12
     )
 
     Begin {
         # Automate 'specials'
-        if( $Font -eq [DesktopMetricsFont]::All ) { 
-            $Font =  [DesktopMetricsFont]::Caption
-            $Font += [DesktopMetricsFont]::SmCaption
-            $Font += [DesktopMetricsFont]::Menu 
-            $Font += [DesktopMetricsFont]::Message
-            $Font += [DesktopMetricsFont]::Status
-            $Font += [DesktopMetricsFont]::Icon
+        if( $Metric -eq [DesktopMetric]::All ) { 
+            $Metric =  [DesktopMetric]::CaptionFont
+            $Metric += [DesktopMetric]::SmCaptionFont
+            $Metric += [DesktopMetric]::MenuFont
+            $Metric += [DesktopMetric]::MessageFont
+            $Metric += [DesktopMetric]::StatusFont
+            $Metric += [DesktopMetric]::IconFont
         }
     }
 
     Process {
         # Go
-        foreach( $f in $Font ) {
+        foreach( $f in $Metric ) {
             # Skip 'specials'
-            if( $f -eq [DesktopMetricsFont]::All ) { continue }
-            if( $f -eq [DesktopMetricsFont]::None ) { continue }
+            if( $f -eq [DesktopMetric]::All ) { continue }
+            if( $f -eq [DesktopMetric]::None ) { continue }
             # Normal
-            $dfnt =[DesktopMetricsFontClass]::new( $f )
+            $dfnt =[DesktopMetricFontClass]::new( $f )
             $dfnt.Size = $FontSize
             $dfnt.ApplyChanges()
             Write-Output $dfnt
@@ -236,7 +250,10 @@ Function Set-DesktopMetrics() {
         # Done
     }
 
-    End {}
+    End {
+        # Cue User
+        Write-Host 'You must Sign-out and -in again for changes to take effect' -ForegroundColor Cyan
+    }
 }
 
 # EOS
