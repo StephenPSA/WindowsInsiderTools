@@ -13,7 +13,7 @@ https://answers.microsoft.com/en-us/insider/forum/insider_wintp-insider_desktop/
 + Use **Get-DesktopMetric** to retrieve the current settings
 + Use **Set-DesktopMetric [-Metric] IconFont** a) **[-FontSize] 14** to change the size of the font as displayed under the icons on the desktop
 
-a) Options: CaptionFont, SmCaptionFont, MenuFont, MessageFont, StatusFont, IconFont
+a) Options: All, CaptionFont, SmCaptionFont, MenuFont, MessageFont, StatusFont, IconFont
 
 [] Denotes optional
 
