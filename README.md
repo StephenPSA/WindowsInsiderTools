@@ -9,9 +9,10 @@ https://answers.microsoft.com/en-us/insider/forum/insider_wintp-insider_desktop/
 + A couple of Powershell functions to get and set the Desktop Advanced Display Settings
 
 # Usage Examples
-+ **Get-DesktopMetric** or **gdm** to retrieve the current settings
-+ **Set-DesktopMetric -Metric IconFont -FontSize 14** or **sdm IconFont 14** to change the size of the font as displayed under the icons on the desktop to 14 points
-+ **Set-DesktopMetric -Metric CaptionFont, MenuFont -FontSize 14** or **sdm CaptionFont, MenuFont 14** to change the size of the Captions and Menu only
++ **Get-DesktopMetric** (or **gdm**) to retrieve the all current settings
++ **Get-DesktopMetric CaptionFont, IconFont** (or **gdm CaptionFont, IconFont**) to retrieve the current settings
++ **Set-DesktopMetric -Metric IconFont -FontSize 14** (or **sdm IconFont 14**) to change the size of the font as displayed under the icons on the desktop to 14 points
++ **Set-DesktopMetric -Metric CaptionFont, MenuFont -FontSize 14** (or **sdm CaptionFont, MenuFont 14**) to change the size of the Captions and Menus only
 + **Set-DesktopMetric All -FontSize 14** to set all fonts to 14 points
 + **Set-DesktopMetric All -RestoreOOTB** to restore the default value of 12 for all fonts
 
