@@ -11,13 +11,13 @@ https://answers.microsoft.com/en-us/insider/forum/insider_wintp-insider_desktop/
 # Usage Examples
 + **Get-DesktopMetric** or **gdm** to retrieve the current settings
 + **Set-DesktopMetric -Metric IconFont -FontSize 14** or **sdm IconFont 14** to change the size of the font as displayed under the icons on the desktop to 14 points
-+ **Set-DesktopMetric -Metric CaptionFont, MenuFont -FontSize 14** or **sdm CaptionFont, MenuFont -14** to change the size of the Captions and Menu only
++ **Set-DesktopMetric -Metric CaptionFont, MenuFont -FontSize 14** or **sdm CaptionFont, MenuFont 14** to change the size of the Captions and Menu only
 + **Set-DesktopMetric All -FontSize 14** to set all fonts to 14 points
 + **Set-DesktopMetric All -RestoreOOTB** to restore the default value of 12 for all fonts
 
-a) Options: **All, CaptionFont, SmCaptionFont, MenuFont, MessageFont, StatusFont, IconFont**
+## Please note, changes will only take effect after you Signout and Signin again
 
-[] Denotes optional
+a) Options: **All, CaptionFont, SmCaptionFont, MenuFont, MessageFont, StatusFont, IconFont**
 
 # See Also:
 + ...
