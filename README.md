@@ -1,4 +1,4 @@
-# *** Under construction, use at own risk ***
+# *** *Under construction, use at own risk* ***
 
 # WindowsInsiderTools - BETA 0.0.0.3, Feb 2017
 
