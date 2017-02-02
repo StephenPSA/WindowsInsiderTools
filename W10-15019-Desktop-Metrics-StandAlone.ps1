@@ -1,14 +1,14 @@
 ﻿##=================================================================================================
 # File    : W10-15019-Desktop-Metrics-StandAlone.ps1
 # Author  : StephenPSA
-# Version : 0.0.0.2
+# Version : 0.0.0.3
 # Date    : Feb, 2017
 #
 # - Change 'Advanced Display Settings' 
 # - A workaround powershell script for Build 10.0.15019.1000
 #
-# PLEASE NOTE: CHECK lines 138 to 144, due to BETA some code is DISABLED
-# PLEASE NOTE: Please do not forget to remove this comment when changed
+# PLEASE NOTE: You use this script at your own risk, the author will not accept any responsibility
+#              for any result from using it.
 #
 ##-------------------------------------------------------------------------------------------------
 # Defines Enums, Classes and Functions
@@ -134,14 +134,8 @@ Class DesktopMetricFontClass {
     hidden [void]WriteRegistry() {
         # vars
         $key = "HKEY_CURRENT_USER\Control Panel\Desktop\WindowMetrics"
-
-        #- BETA DISABLED
-        Write-Host 'BETA RESTRICTION Write to Registry is disabled' -ForegroundColor DarkYellow
-
-        #- BETA ENABLED
-        #    Set-Itemproperty -Path Registry::$Key -Name $this.Metric -Value $this.rawData 
-        #    Write-Host 'The Write to Registry was sucessfull' -ForegroundColor Green
-
+        # WRITE
+        Set-Itemproperty -Path Registry::$Key -Name $this.Metric -Value $this.rawData 
         # Done
     }
 
@@ -155,8 +149,12 @@ Class DesktopMetricFontClass {
     HKEY_CURRENT_USER\Control Panel\Desktop\WindowMetrics
 .EXAMPLE
     Get-DesktopMetric or gdm
+                     or
+    gdm
 .EXAMPLE
     Get-DesktopMetric -Metric Caption, Menu
+                     or
+    gdm Caption, Menu
 #>
 Function Get-DesktopMetric() {
     [Alias( 'gdm' )]
@@ -215,12 +213,17 @@ Function Set-DesktopMetric() {
     Param(
         # The name of the Font Metric to change
         [Parameter( ParameterSetName='FontSize', Mandatory=$false, Position=0 )]
+        [Parameter( ParameterSetName='RestoreOOTB', Mandatory=$false, Position=0 )]
         [DesktopMetric[]]$Metric = [DesktopMetric]::All,
 
         # A Font-Size to set
         [Parameter( ParameterSetName='FontSize', Mandatory=$true, Position=1 )]
         [ValidateRange( 6, 20 )]
-        [int]$FontSize = 12
+        [int]$FontSize = 12,
+
+        # A Font-Size to set
+        [Parameter( ParameterSetName='RestoreOOTB', Mandatory=$true, Position=1 )]
+        [Switch]$RestoreOOTB
     )
 
     Begin {
@@ -241,10 +244,18 @@ Function Set-DesktopMetric() {
             # Skip 'specials'
             if( $f -eq [DesktopMetric]::All ) { continue }
             if( $f -eq [DesktopMetric]::None ) { continue }
-            # Normal
+            # Vars
             $dfnt =[DesktopMetricFontClass]::new( $f )
-            $dfnt.Size = $FontSize
+            # Go
+            if($PSCmdlet.ParameterSetName -eq 'FontSize' ) {
+                $dfnt.Size = $FontSize
+            }
+            if($PSCmdlet.ParameterSetName -eq 'RestoreOOTB' ) {
+                $dfnt.RevertToOOTB()
+            }
+            # Write the changes to the Registry
             $dfnt.ApplyChanges()
+            # Output
             Write-Output $dfnt
         }
         # Done
@@ -252,7 +263,7 @@ Function Set-DesktopMetric() {
 
     End {
         # Cue User
-        Write-Host 'You must Sign-out and -in again for changes to take effect' -ForegroundColor Cyan
+        Write-Host 'You must Signout and Signin again for changes to take effect' -ForegroundColor Cyan
     }
 }
 
