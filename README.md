@@ -1,5 +1,19 @@
 # *** *Under construction, use at own risk* ***
 
+# WindowsInsiderTools - BOT in lieu of a WIP-MS Api
+
+## Reasoning
+
+# Summary
++ ...
+
+# See Also:
++ ...
+
+
+
+------------------- OBSOLETE JUNK BELOW ---------------------------
+
 # WindowsInsiderTools - BETA 0.0.0.3, Feb 2017
 
 ## Workaround for 'Advanced Display Settings Missing In Build 15019', as discussed in the Windows Insiders Form here:
